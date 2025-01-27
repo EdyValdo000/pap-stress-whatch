@@ -51,4 +51,8 @@ public partial class MainPage : ContentPage
         }
     }
 
+    private void SendChatMessage(object sender, EventArgs e)
+    {
+
+    }
 }

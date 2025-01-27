@@ -8,36 +8,57 @@
         <!-- Layout Principal -->
         <Grid RowDefinitions="Auto,*" ColumnDefinitions="200,*">
             <!-- Menu Lateral -->
-            <StackLayout Grid.Row="0" Grid.Column="0" Padding="20" BackgroundColor="#2D3748" Spacing="30">
+            <StackLayout Grid.Row="0" Grid.Column="0" Padding="20" BackgroundColor="#2D3748" Spacing="15">
                 <Label Text="📋 Menu"
-                       FontSize="22"
+                       FontSize="24"
                        TextColor="#E2E8F0"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"/>
 
-                <Button Text="📊 Monitoramento"
-                        BackgroundColor="#4A5568"
-                        TextColor="White"
-                        FontSize="16"
-                        CornerRadius="10"
-                        Margin="0,5"
-                        Clicked="ShowMonitoring"/>
-
-                <Button Text="⚙️ Configurações"
-                        BackgroundColor="#4A5568"
-                        TextColor="White"
-                        FontSize="16"
-                        CornerRadius="10"
-                        Margin="0,5"
-                        Clicked="ShowSettings"/>
-
-                <Button Text="ℹ️ Sobre"
-                        BackgroundColor="#4A5568"
-                        TextColor="White"
-                        FontSize="16"
-                        CornerRadius="10"
-                        Margin="0,5"
-                        Clicked="ShowAbout"/>
+                <VerticalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
+                    <Button Text="📊 Monitoramento"
+                            BackgroundColor="#4A5568"
+                            TextColor="White"
+                            FontSize="16"
+                            CornerRadius="15"
+                            HeightRequest="50"
+                            Clicked="ShowMonitoring">
+                        <Button.Triggers>
+                            <!-- Animação de escala ao pressionar -->
+                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                                <Setter Property="Scale" Value="0.9"/>
+                            </Trigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Text="⚙️ Configurações"
+                            BackgroundColor="#4A5568"
+                            TextColor="White"
+                            FontSize="16"
+                            CornerRadius="15"
+                            HeightRequest="50"
+                            Clicked="ShowSettings">
+                        <Button.Triggers>
+                            <!-- Animação de escala ao pressionar -->
+                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                                <Setter Property="Scale" Value="0.9"/>
+                            </Trigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Text="ℹ️ Sobre"
+                            BackgroundColor="#4A5568"
+                            TextColor="White"
+                            FontSize="16"
+                            CornerRadius="15"
+                            HeightRequest="50"
+                            Clicked="ShowAbout">
+                        <Button.Triggers>
+                            <!-- Animação de escala ao pressionar -->
+                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                                <Setter Property="Scale" Value="0.9"/>
+                            </Trigger>
+                        </Button.Triggers>
+                    </Button>
+                </VerticalStackLayout>
             </StackLayout>
 
             <!-- Conteúdo Principal -->
@@ -162,22 +183,56 @@
                BackgroundColor="#2D3748"
                CornerRadius="20"
                Padding="20"
-               Margin="15"
-               WidthRequest="300"
-               HeightRequest="200"
+               Margin="0,0,40,0"
+               WidthRequest="350"
+               HeightRequest="250"
                HorizontalOptions="End"
                VerticalOptions="End"
                TranslationY="50"
                Opacity="0">
-            <VerticalStackLayout Spacing="10">
+            <VerticalStackLayout Spacing="15">
                 <Label Text="🤖 Chat IA"
                        FontSize="18"
                        FontAttributes="Bold"
                        TextColor="#CBD5E0"/>
-                <Label x:Name="ChatMessageLabel"
-                       Text="Aguardando análise..."
-                       FontSize="16"
-                       TextColor="White"/>
+                <ScrollView HeightRequest="110">
+                    <Label x:Name="ChatMessageLabel"
+                           Text="Aguardando análise..."
+                           FontSize="16"
+                           TextColor="White"
+                           VerticalOptions="StartAndExpand"/>
+                </ScrollView>
+                <HorizontalStackLayout Spacing="10">
+                    <Entry x:Name="ChatEntry"
+                           Placeholder="Digite sua mensagem..."
+                           FontSize="16"
+                           TextColor="White"
+                           PlaceholderColor="#A0AEC0"
+                           BackgroundColor="#1A202C"
+                           Margin="0"
+                           WidthRequest="220"
+                           HorizontalOptions="FillAndExpand"/>
+                    <Button Text="➤"
+                            FontSize="20"
+                            BackgroundColor="#38B2AC"
+                            TextColor="White"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            CornerRadius="27"
+                            BorderWidth="2"
+                            BorderColor="#A5D6A7"
+                            Clicked="SendChatMessage"
+                            Scale="1"
+                            Padding="0">
+                        <Button.Triggers>
+                            <!-- Animação de escala ao pressionar -->
+                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                                <Setter Property="Scale" Value="0.9"/>
+                            </Trigger>
+                        </Button.Triggers>
+                    </Button>
+
+                </HorizontalStackLayout>
             </VerticalStackLayout>
         </Frame>
 
@@ -195,7 +250,14 @@
                     FontSize="20"
                     BackgroundColor="Transparent"
                     TextColor="White"
-                    Clicked="ToggleChat"/>
+                    Clicked="ToggleChat">
+                <Button.Triggers>
+                    <!-- Animação de escala ao pressionar -->
+                    <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                        <Setter Property="Scale" Value="0.9"/>
+                    </Trigger>
+                </Button.Triggers>
+            </Button>
         </Frame>
     </Grid>
 </ContentPage>
