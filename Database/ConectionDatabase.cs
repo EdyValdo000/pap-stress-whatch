@@ -11,4 +11,9 @@ public class ConectionDatabase
         _database = new SQLiteAsyncConnection(local);
         _database.CreateTableAsync<Users>().Wait();
     }
+
+    public Task<int> SaveUsers(Users users)
+    {
+        return _database.InsertAllAsync((System.Collections.IEnumerable)users);
+    }
 }
