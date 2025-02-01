@@ -1,11 +1,12 @@
-﻿namespace pap;
+﻿using pap.Database;
+namespace pap;
 public partial class MainPage : ContentPage
 {
     public MainPage()
     {
         InitializeComponent();
     }
-
+    
     private void ShowMonitoring(object sender, EventArgs e)
     {
         MonitoringLayout.IsVisible = true;
@@ -33,6 +34,24 @@ public partial class MainPage : ContentPage
         {
             await button.ScaleTo(0.98, 100); // Animação ao pressionar
             await button.ScaleTo(1, 100);    // Retorna ao tamanho normal
+        }
+
+        try
+        {
+            var user = new Users
+            {
+                Name = "NameEntry.Text",
+                Email = "EmailEntry.Text",
+                Password = "PasswordEntry.Text"
+            };
+            await App.ConectionDatabase.SaveUser(user);
+
+            await DisplayAlert("Success", "User saved successfully", "Ok");
+        }
+        catch (Exception)
+        {
+            await DisplayAlert("Error", "Error saving user", "Ok");
+            throw;
         }
     }
 
