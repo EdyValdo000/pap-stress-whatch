@@ -2,6 +2,8 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:pap.Database"
+    x:DataType="local:Users"
     x:Class="pap.MainPage"
     BackgroundColor="#1A202C">
 
@@ -241,12 +243,36 @@
                             </Trigger>
                         </Button.Triggers>
                     </Button>
+
                 </VerticalStackLayout>
             </StackLayout>
 
             <!-- Conteúdo Principal para Windows -->
             <ScrollView Grid.Column="1">
                 <VerticalStackLayout Padding="30" Spacing="25">
+
+                    <CollectionView x:Name="Lista"
+Margin="10">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="#2D3748"
+             CornerRadius="10"
+             Padding="10"
+             Margin="5">
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{Binding Name}"
+                     FontSize="18"
+                     TextColor="White"
+                     FontAttributes="Bold"/>
+                                        <Label Text="{Binding Email}"
+                     FontSize="14"
+                     TextColor="#A0AEC0"/>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    
                     <!-- Monitoramento -->
                     <StackLayout x:Name="MonitoringLayoutWin" IsVisible="True" Spacing="20">
                         <Label Text="📊 Monitoramento da Saúde"
@@ -370,10 +396,6 @@
            TranslationY="50"
            Opacity="0">
             <VerticalStackLayout Spacing="15">
-                <Label Text="🤖 Chat IA"
-               FontSize="16"
-               FontAttributes="Bold"
-               TextColor="#CBD5E0"/>
                 <ScrollView HeightRequest="110">
                     <Label x:Name="ChatMessageLabel"
                  Text="Aguardando análise..."

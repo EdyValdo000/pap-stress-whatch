@@ -5,12 +5,16 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         InitializeComponent();
+
+        var users = App.ConectionDatabase!.GetUsersAsync().Result;
+        Lista.ItemsSource = users;
     }
 
     private void CommonButtonClicked(object sender, EventArgs e)
     {
         if (sender is Button btn && btn.CommandParameter is string parameter)
         {
+            SendChatMessage();
             // Oculta todos os layouts de ambas as plataformas
             MonitoringLayout.IsVisible = false;
             SettingsLayout.IsVisible = false;
@@ -62,9 +66,22 @@ public partial class MainPage : ContentPage
         }
     }
 
-    private void SendChatMessage()
+    private async void SendChatMessage()
     {
         // Implementação do envio da mensagem do chat
-        DisplayAlert("Chat", "Mensagem enviada!", "OK");
+        await DisplayAlert("Chat", "Mensagem enviada!", "OK");
+        
+        var user = new Users
+        {
+            Name = await DisplayPromptAsync("Nome","Digite o seu nome", "Ok", "Cancelar"),
+            Email = await DisplayPromptAsync("Email", "Digite o seu email", "Ok", "Cancelar"),
+            Password = await DisplayPromptAsync("Senha", "Digite a sua senha", "Ok", "Cancelar")
+        };
+
+        await App.ConectionDatabase!.SaveUser(user);
+        await DisplayAlert("Base de dados", "Novo usuário!", "OK");
+
+        var users = App.ConectionDatabase!.GetUsersAsync().Result;
+        Lista.ItemsSource = users;
     }
 }
