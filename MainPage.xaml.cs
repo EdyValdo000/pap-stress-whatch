@@ -6,72 +6,65 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
     }
-    
-    private void ShowMonitoring(object sender, EventArgs e)
-    {
-        MonitoringLayout.IsVisible = true;
-        SettingsLayout.IsVisible = false;
-        AboutLayout.IsVisible = false;
-    }
 
-    private void ShowSettings(object sender, EventArgs e)
+    private void CommonButtonClicked(object sender, EventArgs e)
     {
-        MonitoringLayout.IsVisible = false;
-        SettingsLayout.IsVisible = true;
-        AboutLayout.IsVisible = false;
-    }
-
-    private void ShowAbout(object sender, EventArgs e)
-    {
-        MonitoringLayout.IsVisible = false;
-        SettingsLayout.IsVisible = false;
-        AboutLayout.IsVisible = true;
-    }
-
-    private async void OnButtonClicked(object sender, EventArgs e)
-    {
-        if (sender is Button button)
+        if (sender is Button btn && btn.CommandParameter is string parameter)
         {
-            await button.ScaleTo(0.98, 100); // Animação ao pressionar
-            await button.ScaleTo(1, 100);    // Retorna ao tamanho normal
-        }
+            // Oculta todos os layouts de ambas as plataformas
+            MonitoringLayout.IsVisible = false;
+            SettingsLayout.IsVisible = false;
+            AboutLayout.IsVisible = false;
 
-        try
-        {
-            var user = new Users
+            MonitoringLayoutWin.IsVisible = false;
+            SettingsLayoutWin.IsVisible = false;
+            AboutLayoutWin.IsVisible = false;
+
+            // Verifica a plataforma atual
+            bool isWindows = DeviceInfo.Platform == DevicePlatform.WinUI;
+
+            switch (parameter)
             {
-                Name = "NameEntry.Text",
-                Email = "EmailEntry.Text",
-                Password = "PasswordEntry.Text"
-            };
-            await App.ConectionDatabase.SaveUser(user);
+                case "monitoring":
+                    if (isWindows)
+                        MonitoringLayoutWin.IsVisible = true;
+                    else
+                        MonitoringLayout.IsVisible = true;
+                    break;
 
-            await DisplayAlert("Success", "User saved successfully", "Ok");
-        }
-        catch (Exception)
-        {
-            await DisplayAlert("Error", "Error saving user", "Ok");
-            throw;
+                case "settings":
+                    if (isWindows)
+                        SettingsLayoutWin.IsVisible = true;
+                    else
+                        SettingsLayout.IsVisible = true;
+                    break;
+
+                case "about":
+                    if (isWindows)
+                        AboutLayoutWin.IsVisible = true;
+                    else
+                        AboutLayout.IsVisible = true;
+                    break;
+
+                case "toggleChat":
+                    ChatFrame.IsVisible = !ChatFrame.IsVisible;
+                    //ChatFrame.Opacity = ChatFrame.IsVisible ? 1 : 0;
+                    break;
+
+                case "sendChat":
+                    // Aqui você pode tratar o envio da mensagem do chat
+                    SendChatMessage();
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 
-    private async void ToggleChat(object sender, EventArgs e)
+    private void SendChatMessage()
     {
-        if (ChatFrame.IsVisible)
-        {
-            await ChatFrame.FadeTo(0, 250);
-            ChatFrame.IsVisible = false;
-        }
-        else
-        {
-            ChatFrame.IsVisible = true;
-            await ChatFrame.TranslateTo(0, -50, 250); // Desliza para cima
-            await ChatFrame.FadeTo(1, 250);
-        }
-    }
-
-    private void SendChatMessage(object sender, EventArgs e)
-    {
-
+        // Implementação do envio da mensagem do chat
+        DisplayAlert("Chat", "Mensagem enviada!", "OK");
     }
 }
