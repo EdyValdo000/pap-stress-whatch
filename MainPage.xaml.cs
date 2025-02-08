@@ -1,6 +1,6 @@
-﻿using pap.Database;
-using pap.Model;
+﻿using pap.Model;
 namespace pap;
+
 public partial class MainPage : ContentPage
 {
     public MainPage()

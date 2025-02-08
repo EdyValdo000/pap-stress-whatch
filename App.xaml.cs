@@ -1,6 +1,8 @@
-﻿using pap.Database;
+﻿using pap.Pages;
 using pap.Repositore;
 using pap.Service;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Devices;
 
 namespace pap;
 public partial class App : Application
@@ -22,6 +24,21 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        return new Window(new AppShell());
+        Page startPage;
+
+        if (DeviceInfo.Current.Platform == DevicePlatform.Android)
+        {
+            startPage = new AndroidPage();
+        }
+        else if (DeviceInfo.Current.Platform == DevicePlatform.WinUI)
+        {
+            startPage = new WinUIPage();
+        }
+        else
+        {
+            startPage = new AndroidPage(); // Página padrão (pode ser alterada)
+        }
+
+        return new Window(startPage);
     }
 }
