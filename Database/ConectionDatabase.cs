@@ -7,7 +7,7 @@ namespace pap.Database
 {
     public class ConectionDatabase
     {
-        private readonly SQLiteAsyncConnection database;
+        public readonly SQLiteAsyncConnection database;
 
         public ConectionDatabase()
         {

@@ -1,4 +1,5 @@
 ﻿using pap.Database;
+using pap.Model;
 namespace pap;
 public partial class MainPage : ContentPage
 {
@@ -6,7 +7,7 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
 
-        var users = App.ConectionDatabase!.GetUsersAsync().Result;
+        var users = App.UserService!.GetAll().Result;
         Lista.ItemsSource = users;
     }
 
@@ -71,17 +72,17 @@ public partial class MainPage : ContentPage
         // Implementação do envio da mensagem do chat
         await DisplayAlert("Chat", "Mensagem enviada!", "OK");
         
-        var user = new Users
+        var user = new User
         {
             Name = await DisplayPromptAsync("Nome","Digite o seu nome", "Ok", "Cancelar"),
-            Email = await DisplayPromptAsync("Email", "Digite o seu email", "Ok", "Cancelar"),
-            Password = await DisplayPromptAsync("Senha", "Digite a sua senha", "Ok", "Cancelar")
+            Gender = await DisplayActionSheet("Gênero", "Cancelar", null, "Masculino", "Feminino", "Outro"),
+            Age = Convert.ToInt32(await DisplayPromptAsync("Idade", "Digite a sua idade", "Ok", "Cancelar"))
         };
 
-        await App.ConectionDatabase!.SaveUser(user);
+        await App.UserService!.Save(user);
         await DisplayAlert("Base de dados", "Novo usuário!", "OK");
 
-        var users = App.ConectionDatabase!.GetUsersAsync().Result;
+        var users = App.UserService!.GetAll().Result;
         Lista.ItemsSource = users;
     }
 }

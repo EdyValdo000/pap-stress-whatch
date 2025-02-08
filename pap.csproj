@@ -67,7 +67,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Pages\" />
-	  <Folder Include="Service\" />
 	</ItemGroup>
 
 </Project>
