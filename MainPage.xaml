@@ -1,117 +1,122 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="pap.MainPage"
-             BackgroundColor="#1A202C">
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:pap.Database"
+    x:DataType="local:Users"
+    x:Class="pap.MainPage"
+    BackgroundColor="#1A202C">
 
+    <!-- Container principal que agrupa os layouts específicos -->
     <Grid>
-        <!-- Layout Principal -->
-        <Grid RowDefinitions="Auto,*" ColumnDefinitions="200,*">
-            <!-- Menu Lateral -->
-            <StackLayout Grid.Row="0" Grid.Column="0" Padding="20" BackgroundColor="#2D3748" Spacing="15">
-                <Label Text="📋 Menu"
-                       FontSize="{OnPlatform Android=20, WinUI=24}"
-                       TextColor="#E2E8F0"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center"/>
+        <!-- Layout específico para Android -->
+        <Grid x:Name="AndroidLayout"
+          IsVisible="{OnPlatform Android=true, WinUI=false}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-                <VerticalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
-                    <Button Text="📊 Monitoramento"
-                            BackgroundColor="#4A5568"
-                            TextColor="White"
-                            FontSize="{OnPlatform Android=14, WinUI=16}"
-                            CornerRadius="15"
-                            HeightRequest="{OnPlatform Android=40, WinUI=50}"
-                            Clicked="ShowMonitoring">
-                        <Button.Triggers>
-                            <!-- Animação de escala ao pressionar -->
-                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
-                                <Setter Property="Scale" Value="0.9"/>
-                            </Trigger>
-                        </Button.Triggers>
-                    </Button>
-                    <Button Text="⚙️ Configurações"
-                            BackgroundColor="#4A5568"
-                            TextColor="White"
-                            FontSize="{OnPlatform Android=14, WinUI=16}"
-                            CornerRadius="15"
-                            HeightRequest="{OnPlatform Android=40, WinUI=50}"
-                            Clicked="ShowSettings">
-                        <Button.Triggers>
-                            <!-- Animação de escala ao pressionar -->
-                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
-                                <Setter Property="Scale" Value="0.9"/>
-                            </Trigger>
-                        </Button.Triggers>
-                    </Button>
-                    <Button Text="ℹ️ Sobre"
-                            BackgroundColor="#4A5568"
-                            TextColor="White"
-                            FontSize="{OnPlatform Android=14, WinUI=16}"
-                            CornerRadius="15"
-                            HeightRequest="{OnPlatform Android=40, WinUI=50}"
-                            Clicked="ShowAbout">
-                        <Button.Triggers>
-                            <!-- Animação de escala ao pressionar -->
-                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
-                                <Setter Property="Scale" Value="0.9"/>
-                            </Trigger>
-                        </Button.Triggers>
-                    </Button>
-                </VerticalStackLayout>
+            <!-- Menu Superior (Horizontal) -->
+            <StackLayout Grid.Row="0" Orientation="Horizontal"
+                   Padding="10" BackgroundColor="#2D3748"
+                   Spacing="10" HorizontalOptions="FillAndExpand">
+                <!-- Todos os botões chamam o mesmo evento, passando um parâmetro diferente -->
+                <Button Text="📊 Monitoramento"
+                BackgroundColor="#4A5568"
+                TextColor="White"
+                FontSize="14"
+                CornerRadius="15"
+                HeightRequest="40"
+                HorizontalOptions="FillAndExpand"
+                Clicked="CommonButtonClicked"
+                CommandParameter="monitoring">
+                    <Button.Triggers>
+                        <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                            <Setter Property="Scale" Value="0.95"/>
+                        </Trigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Text="⚙️ Configurações"
+                BackgroundColor="#4A5568"
+                TextColor="White"
+                FontSize="14"
+                CornerRadius="15"
+                HeightRequest="40"
+                HorizontalOptions="FillAndExpand"
+                Clicked="CommonButtonClicked"
+                CommandParameter="settings">
+                    <Button.Triggers>
+                        <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                            <Setter Property="Scale" Value="0.95"/>
+                        </Trigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Text="ℹ️ Sobre"
+                BackgroundColor="#4A5568"
+                TextColor="White"
+                FontSize="14"
+                CornerRadius="15"
+                HeightRequest="40"
+                HorizontalOptions="FillAndExpand"
+                Clicked="CommonButtonClicked"
+                CommandParameter="about">
+                    <Button.Triggers>
+                        <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                            <Setter Property="Scale" Value="0.95"/>
+                        </Trigger>
+                    </Button.Triggers>
+                </Button>
             </StackLayout>
 
-            <!-- Conteúdo Principal -->
-            <ScrollView Grid.Row="0" Grid.Column="1">
-                <VerticalStackLayout Padding="{OnPlatform Android=20, WinUI=30}" Spacing="{OnPlatform Android=15, WinUI=25}">
+            <!-- Conteúdo Principal para Android -->
+            <ScrollView Grid.Row="1">
+                <VerticalStackLayout Padding="20" Spacing="15">
                     <!-- Monitoramento -->
                     <StackLayout x:Name="MonitoringLayout" IsVisible="True" Spacing="20">
                         <Label Text="📊 Monitoramento da Saúde"
-                               FontSize="{OnPlatform Android=24, WinUI=28}"
-                               TextColor="#E2E8F0"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"/>
-
-                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" Padding="0">
+                   FontSize="24"
+                   TextColor="#E2E8F0"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
                             <!-- Frequência Cardíaca -->
-                            <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="15" Grid.Row="0" Grid.Column="0" Margin="10,5">
+                            <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="15" Margin="0,5">
                                 <VerticalStackLayout Spacing="5">
                                     <Label Text="❤️ Frequência Cardíaca"
-                                           FontSize="{OnPlatform Android=16, WinUI=18}"
-                                           TextColor="#CBD5E0"/>
+                         FontSize="16"
+                         TextColor="#CBD5E0"/>
                                     <Label x:Name="HeartRateLabel"
-                                           Text="-- bpm"
-                                           FontSize="{OnPlatform Android=20, WinUI=22}"
-                                           TextColor="#38B2AC"
-                                           FontAttributes="Bold"/>
+                         Text="-- bpm"
+                         FontSize="20"
+                         TextColor="#38B2AC"
+                         FontAttributes="Bold"/>
                                 </VerticalStackLayout>
                             </Frame>
-
                             <!-- Temperatura Corporal -->
-                            <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="15" Grid.Row="0" Grid.Column="1" Margin="10,5">
+                            <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="15" Margin="0,5">
                                 <VerticalStackLayout Spacing="5">
                                     <Label Text="🌡️ Temperatura Corporal"
-                                           FontSize="{OnPlatform Android=16, WinUI=18}"
-                                           TextColor="#CBD5E0"/>
+                         FontSize="16"
+                         TextColor="#CBD5E0"/>
                                     <Label x:Name="TemperatureLabel"
-                                           Text="--°C"
-                                           FontSize="{OnPlatform Android=20, WinUI=22}"
-                                           TextColor="#F56565"
-                                           FontAttributes="Bold"/>
+                         Text="--°C"
+                         FontSize="20"
+                         TextColor="#F56565"
+                         FontAttributes="Bold"/>
                                 </VerticalStackLayout>
                             </Frame>
-
-                            <!-- Nível de Estresse -->
-                            <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="15" Grid.Row="1" Grid.Column="0" Margin="10,5">
+                            <!-- Nível de Estresse ocupa a largura total -->
+                            <Frame Grid.ColumnSpan="2" BackgroundColor="#2D3748" CornerRadius="15" Padding="15" Margin="0,5">
                                 <VerticalStackLayout Spacing="5">
                                     <Label Text="🧠 Nível de Estresse"
-                                           FontSize="{OnPlatform Android=16, WinUI=18}"
-                                           TextColor="#CBD5E0"/>
+                         FontSize="16"
+                         TextColor="#CBD5E0"/>
                                     <Label x:Name="GSRLabel"
-                                           Text="--"
-                                           FontSize="{OnPlatform Android=20, WinUI=22}"
-                                           TextColor="#48BB78"
-                                           FontAttributes="Bold"/>
+                         Text="--"
+                         FontSize="20"
+                         TextColor="#48BB78"
+                         FontAttributes="Bold"/>
                                 </VerticalStackLayout>
                             </Frame>
                         </Grid>
@@ -120,141 +125,333 @@
                     <!-- Configurações -->
                     <StackLayout x:Name="SettingsLayout" IsVisible="False" Spacing="20">
                         <Label Text="⚙️ Configurações"
-                               FontSize="{OnPlatform Android=24, WinUI=28}"
-                               TextColor="#E2E8F0"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"/>
-
+                   FontSize="24"
+                   TextColor="#E2E8F0"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
                         <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="10">
                             <Entry Placeholder="Endereço IP"
-                                   FontSize="{OnPlatform Android=14, WinUI=16}"
-                                   TextColor="White"
-                                   PlaceholderColor="#A0AEC0"
-                                   BackgroundColor="Transparent"
-                                   Margin="0,5"/>
+                     FontSize="14"
+                     TextColor="White"
+                     PlaceholderColor="#A0AEC0"
+                     BackgroundColor="Transparent"
+                     Margin="0,5"/>
                         </Frame>
-
                         <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="10">
                             <Entry Placeholder="Porta"
-                                   FontSize="{OnPlatform Android=14, WinUI=16}"
-                                   TextColor="White"
-                                   PlaceholderColor="#A0AEC0"
-                                   BackgroundColor="Transparent"
-                                   Margin="0,5"/>
+                     FontSize="14"
+                     TextColor="White"
+                     PlaceholderColor="#A0AEC0"
+                     BackgroundColor="Transparent"
+                     Margin="0,5"/>
                         </Frame>
-
-                        <HorizontalStackLayout Spacing="20">
+                        <HorizontalStackLayout Spacing="10">
                             <Button Text="🔗 Conectar"
-                                    BackgroundColor="#38B2AC"
-                                    TextColor="White"
-                                    CornerRadius="10"
-                                    Margin="5"
-                                    Clicked="OnButtonClicked"/>
+                      BackgroundColor="#38B2AC"
+                      TextColor="White"
+                      CornerRadius="10"
+                      HorizontalOptions="FillAndExpand"
+                      Clicked="CommonButtonClicked"
+                      CommandParameter="connect"/>
                             <Button Text="❌ Desconectar"
-                                    BackgroundColor="#E53E3E"
-                                    TextColor="White"
-                                    CornerRadius="10"
-                                    Margin="5"
-                                    Clicked="OnButtonClicked"/>
+                      BackgroundColor="#E53E3E"
+                      TextColor="White"
+                      CornerRadius="10"
+                      HorizontalOptions="FillAndExpand"
+                      Clicked="CommonButtonClicked"
+                      CommandParameter="disconnect"/>
                         </HorizontalStackLayout>
                     </StackLayout>
 
                     <!-- Sobre -->
                     <StackLayout x:Name="AboutLayout" IsVisible="False" Spacing="20">
                         <Label Text="ℹ️ Sobre o Projeto"
-                               FontSize="{OnPlatform Android=24, WinUI=28}"
-                               TextColor="#E2E8F0"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"/>
+                   FontSize="24"
+                   TextColor="#E2E8F0"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
                         <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="20">
                             <Label Text="Este projeto monitora indicadores de saúde em tempo real, oferecendo insights baseados em IA. Desenvolvido para trazer bem-estar e inovação ao monitoramento corporal."
-                                   FontSize="{OnPlatform Android=14, WinUI=16}"
-                                   TextColor="#CBD5E0"
-                                   VerticalTextAlignment="Center"/>
+                     FontSize="14"
+                     TextColor="#CBD5E0"
+                     VerticalTextAlignment="Center"/>
                         </Frame>
                     </StackLayout>
                 </VerticalStackLayout>
             </ScrollView>
         </Grid>
 
-        <!-- Chat de IA -->
-        <Frame x:Name="ChatFrame"
-               IsVisible="False"
-               BackgroundColor="#2D3748"
-               CornerRadius="20"
-               Padding="20"
-               Margin="0,0,40,0"
-               WidthRequest="350"
-               HeightRequest="250"
-               HorizontalOptions="End"
-               VerticalOptions="End"
-               TranslationY="50"
-               Opacity="0">
-            <VerticalStackLayout Spacing="15">
-                <Label Text="🤖 Chat IA"
-                       FontSize="{OnPlatform Android=16, WinUI=18}"
-                       FontAttributes="Bold"
-                       TextColor="#CBD5E0"/>
-                <ScrollView HeightRequest="110">
-                    <Label x:Name="ChatMessageLabel"
-                           Text="Aguardando análise..."
-                           FontSize="{OnPlatform Android=14, WinUI=16}"
-                           TextColor="White"
-                           VerticalOptions="StartAndExpand"/>
-                </ScrollView>
-                <HorizontalStackLayout Spacing="10">
-                    <Entry x:Name="ChatEntry"
-                           Placeholder="Digite sua mensagem..."
-                           FontSize="{OnPlatform Android=14, WinUI=16}"
-                           TextColor="White"
-                           PlaceholderColor="#A0AEC0"
-                           BackgroundColor="#1A202C"
-                           Margin="0"
-                           WidthRequest="220"
-                           HorizontalOptions="FillAndExpand"/>
-                    <Button Text="➤"
-                            FontSize="{OnPlatform Android=18, WinUI=20}"
-                            BackgroundColor="#38B2AC"
-                            TextColor="White"
-                            WidthRequest="40"
-                            HeightRequest="40"
-                            CornerRadius="27"
-                            BorderWidth="2"
-                            BorderColor="#A5D6A7"
-                            Clicked="SendChatMessage"
-                            Scale="1"
-                            Padding="0">
+        <!-- Layout específico para Windows (WinUI) -->
+        <Grid x:Name="WindowsLayout"
+          IsVisible="{OnPlatform Android=false, WinUI=true}">
+            <!-- Estrutura de duas colunas: Menu Lateral e Conteúdo Principal -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Menu Lateral -->
+            <StackLayout Grid.Column="0" Padding="20" BackgroundColor="#2D3748" Spacing="15">
+                <Label Text="📋 Menu"
+               FontSize="24"
+               TextColor="#E2E8F0"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+                <VerticalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
+                    <Button Text="📊 Monitoramento"
+                  BackgroundColor="#4A5568"
+                  TextColor="White"
+                  FontSize="16"
+                  CornerRadius="15"
+                  HeightRequest="50"
+                  Clicked="CommonButtonClicked"
+                  CommandParameter="monitoring">
                         <Button.Triggers>
-                            <!-- Animação de escala ao pressionar -->
+                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                                <Setter Property="Scale" Value="0.9"/>
+                            </Trigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Text="⚙️ Configurações"
+                  BackgroundColor="#4A5568"
+                  TextColor="White"
+                  FontSize="16"
+                  CornerRadius="15"
+                  HeightRequest="50"
+                  Clicked="CommonButtonClicked"
+                  CommandParameter="settings">
+                        <Button.Triggers>
+                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                                <Setter Property="Scale" Value="0.9"/>
+                            </Trigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Text="ℹ️ Sobre"
+                  BackgroundColor="#4A5568"
+                  TextColor="White"
+                  FontSize="16"
+                  CornerRadius="15"
+                  HeightRequest="50"
+                  Clicked="CommonButtonClicked"
+                  CommandParameter="about">
+                        <Button.Triggers>
                             <Trigger TargetType="Button" Property="IsPressed" Value="True">
                                 <Setter Property="Scale" Value="0.9"/>
                             </Trigger>
                         </Button.Triggers>
                     </Button>
 
+                </VerticalStackLayout>
+            </StackLayout>
+
+            <!-- Conteúdo Principal para Windows -->
+            <ScrollView Grid.Column="1">
+                <VerticalStackLayout Padding="30" Spacing="25">
+
+                    <CollectionView x:Name="Lista"
+Margin="10">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="#2D3748"
+             CornerRadius="10"
+             Padding="10"
+             Margin="5">
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{Binding Name}"
+                     FontSize="18"
+                     TextColor="White"
+                     FontAttributes="Bold"/>
+                                        <Label Text="{Binding Email}"
+                     FontSize="14"
+                     TextColor="#A0AEC0"/>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    
+                    <!-- Monitoramento -->
+                    <StackLayout x:Name="MonitoringLayoutWin" IsVisible="True" Spacing="20">
+                        <Label Text="📊 Monitoramento da Saúde"
+                   FontSize="28"
+                   TextColor="#E2E8F0"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                            <!-- Frequência Cardíaca -->
+                            <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="15" Margin="10,5">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="❤️ Frequência Cardíaca"
+                         FontSize="18"
+                         TextColor="#CBD5E0"/>
+                                    <Label x:Name="HeartRateLabelWin"
+                         Text="-- bpm"
+                         FontSize="22"
+                         TextColor="#38B2AC"
+                         FontAttributes="Bold"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                            <!-- Temperatura Corporal -->
+                            <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="15" Margin="10,5">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="🌡️ Temperatura Corporal"
+                         FontSize="18"
+                         TextColor="#CBD5E0"/>
+                                    <Label x:Name="TemperatureLabelWin"
+                         Text="--°C"
+                         FontSize="22"
+                         TextColor="#F56565"
+                         FontAttributes="Bold"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                            <!-- Nível de Estresse -->
+                            <Frame Grid.ColumnSpan="2" BackgroundColor="#2D3748" CornerRadius="15" Padding="15" Margin="10,5">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="🧠 Nível de Estresse"
+                         FontSize="18"
+                         TextColor="#CBD5E0"/>
+                                    <Label x:Name="GSRLabelWin"
+                         Text="--"
+                         FontSize="22"
+                         TextColor="#48BB78"
+                         FontAttributes="Bold"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </Grid>
+                    </StackLayout>
+
+                    <!-- Configurações -->
+                    <StackLayout x:Name="SettingsLayoutWin" IsVisible="False" Spacing="20">
+                        <Label Text="⚙️ Configurações"
+                   FontSize="28"
+                   TextColor="#E2E8F0"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+                        <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="10">
+                            <Entry Placeholder="Endereço IP"
+                     FontSize="16"
+                     TextColor="White"
+                     PlaceholderColor="#A0AEC0"
+                     BackgroundColor="Transparent"
+                     Margin="0,5"/>
+                        </Frame>
+                        <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="10">
+                            <Entry Placeholder="Porta"
+                     FontSize="16"
+                     TextColor="White"
+                     PlaceholderColor="#A0AEC0"
+                     BackgroundColor="Transparent"
+                     Margin="0,5"/>
+                        </Frame>
+                        <HorizontalStackLayout Spacing="10">
+                            <Button Text="🔗 Conectar"
+                      BackgroundColor="#38B2AC"
+                      TextColor="White"
+                      CornerRadius="10"
+                      HorizontalOptions="FillAndExpand"
+                      Clicked="CommonButtonClicked"
+                      CommandParameter="connect"/>
+                            <Button Text="❌ Desconectar"
+                      BackgroundColor="#E53E3E"
+                      TextColor="White"
+                      CornerRadius="10"
+                      HorizontalOptions="FillAndExpand"
+                      Clicked="CommonButtonClicked"
+                      CommandParameter="disconnect"/>
+                        </HorizontalStackLayout>
+                    </StackLayout>
+
+                    <!-- Sobre -->
+                    <StackLayout x:Name="AboutLayoutWin" IsVisible="False" Spacing="20">
+                        <Label Text="ℹ️ Sobre o Projeto"
+                   FontSize="28"
+                   TextColor="#E2E8F0"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+                        <Frame BackgroundColor="#2D3748" CornerRadius="15" Padding="20">
+                            <Label Text="Este projeto monitora indicadores de saúde em tempo real, oferecendo insights baseados em IA. Desenvolvido para trazer bem-estar e inovação ao monitoramento corporal."
+                     FontSize="16"
+                     TextColor="#CBD5E0"
+                     VerticalTextAlignment="Center"/>
+                        </Frame>
+                    </StackLayout>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+
+        <!-- Chat de IA (compartilhado em ambas as plataformas) -->
+        <Frame x:Name="ChatFrame"
+           IsVisible="False"
+           BackgroundColor="#2D3748"
+           CornerRadius="20"
+           Padding="20"
+           Margin="0,0,20,20"
+           WidthRequest="320"
+           HeightRequest="250"
+           HorizontalOptions="End"
+           VerticalOptions="End"
+           TranslationY="50"
+           Opacity="0">
+            <VerticalStackLayout Spacing="15">
+                <ScrollView HeightRequest="110">
+                    <Label x:Name="ChatMessageLabel"
+                 Text="Aguardando análise..."
+                 FontSize="14"
+                 TextColor="White"
+                 VerticalOptions="StartAndExpand"/>
+                </ScrollView>
+                <HorizontalStackLayout Spacing="10">
+                    <Entry x:Name="ChatEntry"
+                 Placeholder="Digite sua mensagem..."
+                 FontSize="14"
+                 TextColor="White"
+                 PlaceholderColor="#A0AEC0"
+                 BackgroundColor="#1A202C"
+                 HorizontalOptions="FillAndExpand"
+                 WidthRequest="220"/>
+                    <Button Text="➤"
+                  FontSize="18"
+                  BackgroundColor="#38B2AC"
+                  TextColor="White"
+                  WidthRequest="40"
+                  HeightRequest="40"
+                  CornerRadius="20"
+                  BorderWidth="2"
+                  BorderColor="#A5D6A7"
+                  Clicked="CommonButtonClicked"
+                  CommandParameter="sendChat">
+                        <Button.Triggers>
+                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                                <Setter Property="Scale" Value="0.95"/>
+                            </Trigger>
+                        </Button.Triggers>
+                    </Button>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </Frame>
 
-        <!-- Botão Flutuante -->
+        <!-- Botão Flutuante (compartilhado) -->
         <Frame BackgroundColor="#38B2AC"
-               WidthRequest="60"
-               HeightRequest="60"
-               CornerRadius="30"
-               Padding="0"
-               HasShadow="True"
-               HorizontalOptions="End"
-               VerticalOptions="End"
-               Margin="20">
+           WidthRequest="60"
+           HeightRequest="60"
+           CornerRadius="30"
+           Padding="0"
+           HasShadow="True"
+           HorizontalOptions="End"
+           VerticalOptions="End"
+           Margin="20">
             <Button Text="💬"
-                    FontSize="{OnPlatform Android=18, WinUI=20}"
-                    BackgroundColor="Transparent"
-                    TextColor="White"
-                    Clicked="ToggleChat">
+              FontSize="18"
+              BackgroundColor="Transparent"
+              TextColor="White"
+              Clicked="CommonButtonClicked"
+              CommandParameter="toggleChat">
                 <Button.Triggers>
-                    <!-- Animação de escala ao pressionar -->
                     <Trigger TargetType="Button" Property="IsPressed" Value="True">
-                        <Setter Property="Scale" Value="0.9"/>
+                        <Setter Property="Scale" Value="0.95"/>
                     </Trigger>
                 </Button.Triggers>
             </Button>

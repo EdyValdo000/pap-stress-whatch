@@ -7,6 +7,7 @@ public partial class App : Application
     {
         InitializeComponent();
         ConectionDatabase = new ConectionDatabase();
+
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
