@@ -4,7 +4,7 @@
              xmlns:grafico="clr-namespace:pap.Graphics"
              x:Class="pap.Pages.WinUIPage"
              Title="Monitoramento"
-             BackgroundColor="Black">
+             BackgroundColor="DarkCyan">
 
     <Grid RowDefinitions="Auto, *">
 
@@ -48,21 +48,23 @@
                     <!-- Temperatura Corporal -->
                     <VerticalStackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="Center">
                         <Label Text="Temp. (°C)" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
-                        <GraphicsView x:Name="temperatureGraphicsView" HeightRequest="90" WidthRequest="90">
+                        <GraphicsView x:Name="temperatureGraphicsView" HeightRequest="300" WidthRequest="150">
                             <GraphicsView.Drawable>
-                                <grafico:TemperatureGauge/>
+                                <grafico:ThermometerGauge/>
                             </GraphicsView.Drawable>
                         </GraphicsView>
+                        <Button Clicked="Button_Clicked"/>
                     </VerticalStackLayout>
 
                     <!-- Condutividade da Pele -->
                     <VerticalStackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Center">
                         <Label Text="GSR" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
-                        <GraphicsView x:Name="gsrGraphicsView" HeightRequest="90" WidthRequest="90">
+                        <GraphicsView x:Name="gsrGraphicsView" HeightRequest="150" WidthRequest="150">
                             <GraphicsView.Drawable>
-                                <grafico:GSRGauge/>
+                                <grafico:GsrWave/>
                             </GraphicsView.Drawable>
                         </GraphicsView>
+                        <Button Clicked="OnGSRValueChanged"/>
                     </VerticalStackLayout>
 
                 </Grid>
