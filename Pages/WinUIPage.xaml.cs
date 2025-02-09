@@ -11,13 +11,15 @@ public partial class WinUIPage : ContentPage
     public WinUIPage()
 	{
 		InitializeComponent();
-
+        
+        #region Gráfico do BPM
         heartRateGraphicsView.Drawable = heartRateGraph;
-
         // Iniciar animação do ECG
         StartECGAnimation();
-
+        #endregion
+        
         oxygenGraphicsView.Drawable = oxygenGauge;
+        StartOxygenGaugeAnimation();
     }
 
     #region Gráfico do BPM
@@ -38,13 +40,22 @@ public partial class WinUIPage : ContentPage
         heartRateGraphicsView.Invalidate(); // Redesenha sem reiniciar a onda
     }
     #endregion
-   
-    private void OnUpdateOxygen(object sender, EventArgs e)
+
+    private async void StartOxygenGaugeAnimation()
+    {
+        while (true)
+        {
+            oxygenGraphicsView.Invalidate(); // Atualiza o desenho
+            await Task.Delay(50); // Atualiza a animação suavemente
+        }
+    }
+
+    private void OnValueChanged(object sender, EventArgs e)
     {
         Random random = new Random();
-        double newOxygen = random.Next(0, 100); // Gera um valor aleatório entre 85% e 100%
-
-        oxygenGauge.UpdateValue(0); // Atualiza o valor do gráfico
-        oxygenGraphicsView.Invalidate(); // Redesenha o gráfico com o novo valor
+        double newValue = random.Next(0, 101); // Gera um valor aleatório de 0 a 100
+        oxygenGauge.UpdateValue(newValue);
+        oxygenGraphicsView.Invalidate(); // Atualiza o gráfico
     }
+
 }

@@ -42,7 +42,7 @@
                             </GraphicsView.Drawable>
                         </GraphicsView>
 
-                        <Button Text="Atualizar Oxigênio" Clicked="OnUpdateOxygen"/>
+                        <Button Text="Atualizar Oxigênio" Clicked="OnValueChanged"/>
                     </VerticalStackLayout>
 
                     <!-- Temperatura Corporal -->
