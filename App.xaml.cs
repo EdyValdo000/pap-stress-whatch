@@ -1,8 +1,6 @@
 ﻿using pap.Pages;
 using pap.Repositore;
 using pap.Service;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Devices;
 
 namespace pap;
 public partial class App : Application

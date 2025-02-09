@@ -5,12 +5,21 @@ public partial class MainPage : ContentPage
 {
     public MainPage()
     {
-        InitializeComponent();
+        InitializeComponent();        
+    }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        CarregarUsers();
+    }
+
+    private void CarregarUsers()
+    {
         var users = App.UserService!.GetAll().Result;
         Lista.ItemsSource = users;
     }
-
+    
     private void CommonButtonClicked(object sender, EventArgs e)
     {
         if (sender is Button btn && btn.CommandParameter is string parameter)

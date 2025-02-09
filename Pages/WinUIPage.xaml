@@ -1,12 +1,73 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:grafico="clr-namespace:pap.Graphics"
              x:Class="pap.Pages.WinUIPage"
-             Title="WinUIPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Windows 321"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Monitoramento"
+             BackgroundColor="Black">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <!-- Título -->
+        <Label Text="Monitoramento de Sinais Vitais"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               Margin="10"/>
+
+        <!-- Layout Principal -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="10">
+
+                <!-- Indicadores dos Sensores -->
+                <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" Margin="10">
+
+                    <!-- Frequência Cardíaca -->
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Center">
+                        <Label Text="BPM" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" />
+                        <Button Text="Iniciar" Clicked="StartHeartRate" HorizontalOptions="Center"/>
+                        <GraphicsView x:Name="heartRateGraphicsView" HeightRequest="100" WidthRequest="300">
+                            <GraphicsView.Drawable>
+                                <grafico:HeartRateGraph/>
+                            </GraphicsView.Drawable>
+                        </GraphicsView>
+                    </VerticalStackLayout>
+
+                    <!-- Saturação de Oxigênio -->
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center">
+                        <Label Text="O₂ (%)" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <GraphicsView x:Name="oxygenGraphicsView" HeightRequest="150" WidthRequest="150">
+                            <GraphicsView.Drawable>
+                                <grafico:OxygenGauge/>
+                            </GraphicsView.Drawable>
+                        </GraphicsView>
+
+                        <Button Text="Atualizar Oxigênio" Clicked="OnUpdateOxygen"/>
+                    </VerticalStackLayout>
+
+                    <!-- Temperatura Corporal -->
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="Center">
+                        <Label Text="Temp. (°C)" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <GraphicsView x:Name="temperatureGraphicsView" HeightRequest="90" WidthRequest="90">
+                            <GraphicsView.Drawable>
+                                <grafico:TemperatureGauge/>
+                            </GraphicsView.Drawable>
+                        </GraphicsView>
+                    </VerticalStackLayout>
+
+                    <!-- Condutividade da Pele -->
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Center">
+                        <Label Text="GSR" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <GraphicsView x:Name="gsrGraphicsView" HeightRequest="90" WidthRequest="90">
+                            <GraphicsView.Drawable>
+                                <grafico:GSRGauge/>
+                            </GraphicsView.Drawable>
+                        </GraphicsView>
+                    </VerticalStackLayout>
+
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
 </ContentPage>
