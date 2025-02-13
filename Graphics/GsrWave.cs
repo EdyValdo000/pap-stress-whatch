@@ -39,7 +39,7 @@ namespace pap.Graphics
             // 🔵 Desenha a onda baseada no GSR
             PathF path = new PathF();
             float amplitude = 20 + (float)(Value / 5); // Ajusta a altura conforme o GSR
-            float frequency = 0.05f; // Frequência suave
+            float frequency = 0.05f + (float)(Value / 1000); // Aumenta a frequência conforme o GSR
 
             for (float x = centerX - width / 2; x <= centerX + width / 2; x += 5)
             {
@@ -74,7 +74,7 @@ namespace pap.Graphics
         {
             while (_isAnimating)
             {
-                _waveOffset += 3; // Movimento da onda
+                _waveOffset += (float)(Value / 20); // Aumenta a velocidade conforme o GSR
                 await Task.Delay(50);
             }
         }
