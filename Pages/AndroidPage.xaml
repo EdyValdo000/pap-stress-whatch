@@ -3,176 +3,260 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:grafico="clr-namespace:pap.Graphics"
              x:Class="pap.Pages.AndroidPage"
-             BackgroundColor="#121212">
+             BackgroundColor="#121212"
+             Title="Stress Whasch">
 
     <ScrollView>
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="20" Padding="20">
+        <Grid>
+            <ScrollView x:Name="ScrollMonitoring">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="20" Padding="20">
 
-            <!-- Barra Superior (AppBar) -->
-            <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
-                <Label Text="Stress Whasch" 
-                       FontSize="24" 
-                       FontAttributes="Bold" 
-                       TextColor="White" 
-                       VerticalOptions="Center"/>
+                    <!-- Barra Superior (AppBar) -->
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                        <Label Text="Stress Whasch" 
+            FontSize="24" 
+            FontAttributes="Bold" 
+            TextColor="White" 
+            VerticalOptions="Center"/>
 
-                <HorizontalStackLayout Grid.Column="1" Spacing="10">
-                    <Image Source="settings_icon.png" 
-                           WidthRequest="24" 
-                           HeightRequest="24" 
-                           VerticalOptions="Center"/>
-                    <Image Source="more_icon.png" 
-                           WidthRequest="24" 
-                           HeightRequest="24" 
-                           VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-            </Grid>
-
-            <!-- Seção de Título -->
-            <Grid Grid.Row="1" ColumnDefinitions="Auto,*" VerticalOptions="Center">
-                <Image Source="vital_signs_icon.png" 
-                       WidthRequest="24" 
-                       HeightRequest="24" 
-                       VerticalOptions="Center"/>
-                <Label Text="Vital Signs" 
-                       Grid.Column="1" 
-                       FontSize="20" 
-                       FontAttributes="Bold" 
-                       TextColor="White" 
-                       Margin="10,0,0,0" 
-                       VerticalOptions="Center"/>
-            </Grid>
-
-            <!-- Grade de Informações (Grid com 2 colunas e 2 linhas) -->
-            <Grid Grid.Row="2" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*" RowSpacing="20" ColumnSpacing="20">
-
-                <!-- Primeiro Card (Frequência Cardíaca) -->
-                <Frame BackgroundColor="#1E1E1E" CornerRadius="10" Padding="15">
-                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
-                        <Image Source="heart_icon.png" 
-                               Grid.Row="0" Grid.Column="0" 
-                               WidthRequest="24" 
-                               HeightRequest="24" 
-                               VerticalOptions="Center"/>
-                        <Label Text="72" 
-                               Grid.Row="0" Grid.Column="1" 
-                               FontSize="24" 
-                               FontAttributes="Bold" 
-                               TextColor="White" 
-                               Margin="10,0,0,0" 
-                               VerticalOptions="Center"/>
-                        <Label Text="BPM" 
-                               Grid.Row="1" Grid.Column="1" 
-                               FontSize="14" 
-                               TextColor="White" 
-                               Margin="10,0,0,0" 
-                               VerticalOptions="Center"/>
+                        <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                            <Image Source="settings_icon.png" 
+                WidthRequest="24" 
+                HeightRequest="24" 
+                VerticalOptions="Center"/>
+                            <Image Source="more_icon.png" 
+                WidthRequest="24" 
+                HeightRequest="24" 
+                VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
                     </Grid>
-                    
-                </Frame>
 
-                <!-- Segundo Card (GSR - Condutividade da Pele) -->
-                <Frame BackgroundColor="#1E1E1E" CornerRadius="10" Padding="15" Grid.Column="1">
-                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
-                        <Image Source="gsr_icon.png" 
-                               Grid.Row="0" Grid.Column="0" 
-                               WidthRequest="24" 
-                               HeightRequest="24" 
-                               VerticalOptions="Center"/>
-                        <Label Text="0.5" 
-                               Grid.Row="0" Grid.Column="1" 
-                               FontSize="24" 
-                               FontAttributes="Bold" 
-                               TextColor="White" 
-                               Margin="10,0,0,0" 
-                               VerticalOptions="Center"/>
-                        <Label Text="µS" 
-                               Grid.Row="1" Grid.Column="1" 
-                               FontSize="14" 
-                               TextColor="White" 
-                               Margin="10,0,0,0" 
-                               VerticalOptions="Center"/>
+                    <!-- Seção de Título -->
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto,*" VerticalOptions="Center">
+                        <Image Source="vital_signs_icon.png" 
+            WidthRequest="24" 
+            HeightRequest="24" 
+            VerticalOptions="Center"/>
+                        <Label Text="Sinais vitais" 
+            Grid.Column="1" 
+            FontSize="20" 
+            FontAttributes="Bold" 
+            TextColor="White" 
+            Margin="10,0,0,0" 
+            VerticalOptions="Center"/>
                     </Grid>
-                </Frame>
 
-                <!-- Terceiro Card (Oxigenação) -->
-                <Frame BackgroundColor="#1E1E1E" CornerRadius="10" Padding="15" Grid.Row="1">
-                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
-                        <Image Source="oxygen_icon.png" 
-                               Grid.Row="0" Grid.Column="0" 
-                               WidthRequest="24" 
-                               HeightRequest="24" 
-                               VerticalOptions="Center"/>
-                        <Label Text="98%" 
-                               Grid.Row="0" Grid.Column="1" 
-                               FontSize="24" 
-                               FontAttributes="Bold" 
-                               TextColor="White" 
-                               Margin="10,0,0,0" 
-                               VerticalOptions="Center"/>
-                        <Label Text="SpO2" 
-                               Grid.Row="1" Grid.Column="1" 
-                               FontSize="14" 
-                               TextColor="White" 
-                               Margin="10,0,0,0" 
-                               VerticalOptions="Center"/>
+                    <!-- Grade de Informações (Grid com 2 colunas e 2 linhas) -->
+                    <Grid Grid.Row="2" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*" RowSpacing="20" ColumnSpacing="20">
+
+                        <!-- Primeiro Card (Frequência Cardíaca) -->
+                        <Frame BackgroundColor="#1E1E1E" CornerRadius="10" Padding="15">
+                            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
+                                <Image Source="heart_icon.png" 
+                    Grid.Row="0" Grid.Column="0" 
+                    WidthRequest="24" 
+                    HeightRequest="24" 
+                    VerticalOptions="Center"/>
+                                <Label Text="72" 
+                    Grid.Row="0" Grid.Column="1" 
+                    FontSize="24" 
+                    FontAttributes="Bold" 
+                    TextColor="White" 
+                    Margin="10,0,0,0" 
+                    VerticalOptions="Center"/>
+                                <Label Text="BPM" 
+                    Grid.Row="1" Grid.Column="1" 
+                    FontSize="14" 
+                    TextColor="White" 
+                    Margin="10,0,0,0" 
+                    VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                        <Button x:Name="btnBPM" BackgroundColor="Transparent" Clicked="btnBPM_Clicked"/>
+
+                        <!-- Segundo Card (GSR - Condutividade da Pele) -->
+                        <Frame BackgroundColor="#1E1E1E" CornerRadius="10" Padding="15" Grid.Column="1">
+                            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
+                                <Image Source="gsr_icon.png" 
+                                    Grid.Row="0" Grid.Column="0" 
+                                    WidthRequest="24" 
+                                    HeightRequest="24" 
+                                    VerticalOptions="Center"/>
+                                <Label Text="0.5" 
+                                    Grid.Row="0" Grid.Column="1" 
+                                    FontSize="24" 
+                                    FontAttributes="Bold" 
+                                    TextColor="White" 
+                                    Margin="10,0,0,0" 
+                                    VerticalOptions="Center"/>
+                                <Label Text="µS" 
+                                    Grid.Row="1" Grid.Column="1" 
+                                    FontSize="14" 
+                                    TextColor="White" 
+                                    Margin="10,0,0,0" 
+                                    VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                        <Button x:Name="btnGSR" Grid.Column="1" BackgroundColor="Transparent" Clicked="btnGSR_Clicked"/>
+
+                        <!-- Terceiro Card (Oxigenação) -->
+                        <Frame BackgroundColor="#1E1E1E" CornerRadius="10" Padding="15" Grid.Row="1">
+                            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
+                                <Image Source="oxygen_icon.png" 
+                                    Grid.Row="0" Grid.Column="0" 
+                                    WidthRequest="24" 
+                                    HeightRequest="24" 
+                                    VerticalOptions="Center"/>
+                                <Label Text="98%" 
+                                    Grid.Row="0" Grid.Column="1" 
+                                    FontSize="24" 
+                                    FontAttributes="Bold" 
+                                    TextColor="White" 
+                                    Margin="10,0,0,0" 
+                                    VerticalOptions="Center"/>
+                                <Label Text="SpO2" 
+                                    Grid.Row="1" Grid.Column="1" 
+                                    FontSize="14" 
+                                    TextColor="White" 
+                                    Margin="10,0,0,0" 
+                                    VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                        <Button x:Name="btnOxygen" Grid.Row="1" BackgroundColor="Transparent" Clicked="btnOxygen_Clicked"/>
+
+                        <!-- Quarto Card (Temperatura) -->
+                        <Frame BackgroundColor="#1E1E1E" CornerRadius="10" Padding="15" Grid.Row="1" Grid.Column="1">
+                            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
+                                <Image Source="stress_icon.png" 
+                                    Grid.Row="0" Grid.Column="0" 
+                                    WidthRequest="24" 
+                                    HeightRequest="24" 
+                                    VerticalOptions="Center"/>
+                                <Label Text="35 ºC" 
+                                    Grid.Row="0" Grid.Column="1" 
+                                    FontSize="24" 
+                                    FontAttributes="Bold" 
+                                    TextColor="White" 
+                                    Margin="10,0,0,0" 
+                                    VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                        <Button x:Name="btnTemperature" Grid.Row="1" Grid.Column="1" BackgroundColor="Transparent" Clicked="btnTemperature_Clicked"/>
+
                     </Grid>
-                </Frame>
 
-                <!-- Quarto Card (Nível de Stress) -->
-                <Frame BackgroundColor="#1E1E1E" CornerRadius="10" Padding="15" Grid.Row="1" Grid.Column="1">
-                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
-                        <Image Source="stress_icon.png" 
-                               Grid.Row="0" Grid.Column="0" 
-                               WidthRequest="24" 
-                               HeightRequest="24" 
-                               VerticalOptions="Center"/>
-                        <Label Text="45" 
-                               Grid.Row="0" Grid.Column="1" 
-                               FontSize="24" 
-                               FontAttributes="Bold" 
-                               TextColor="White" 
-                               Margin="10,0,0,0" 
-                               VerticalOptions="Center"/>
-                        <Label Text="Stress Level" 
-                               Grid.Row="1" Grid.Column="1" 
-                               FontSize="14" 
-                               TextColor="White" 
-                               Margin="10,0,0,0" 
-                               VerticalOptions="Center"/>
+                    <!-- Gráfico de Linha (Prevalência) -->
+                    <Frame Grid.Row="3" BackgroundColor="#1E1E1E" CornerRadius="10" Padding="15">
+                        <VerticalStackLayout>
+                            <Label Text="Gráfico" 
+                                FontSize="18" 
+                                FontAttributes="Bold" 
+                                TextColor="White"/>
+
+                            <GraphicsView x:Name="gsrGraphicsView" HeightRequest="200" WidthRequest="320">
+                                <GraphicsView.Drawable>
+                                    <grafico:GsrWave/>
+                                </GraphicsView.Drawable>
+                            </GraphicsView>
+
+                            <GraphicsView x:Name="heartRateGraphicsView" HeightRequest="150" IsVisible="False">
+                                <GraphicsView.Drawable>
+                                    <grafico:HeartRateGraph/>
+                                </GraphicsView.Drawable>
+                            </GraphicsView>
+
+                            <GraphicsView x:Name="oxygenGraphicsView" HeightRequest="150" WidthRequest="150" IsVisible="False">
+                                <GraphicsView.Drawable>
+                                    <grafico:OxygenGauge/>
+                                </GraphicsView.Drawable>
+                            </GraphicsView>
+
+                            <GraphicsView x:Name="temperatureGraphicsView" HeightRequest="350" IsVisible="False">
+                                <GraphicsView.Drawable>
+                                    <grafico:ThermometerGauge/>
+                                </GraphicsView.Drawable>
+                            </GraphicsView>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Opções de Visualização (Diária/Semanal) -->
+                    <Grid Grid.Row="4" ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Text="Actualizar" 
+                             BackgroundColor="#333333" 
+                             TextColor="White" 
+                             CornerRadius="5"/>
+                        <Button Text="Coneção" 
+                             Clicked="btnConecao_Clicked"
+                             Grid.Column="1" 
+                             BackgroundColor="#333333" 
+                             TextColor="White" 
+                             CornerRadius="5"/>
                     </Grid>
-                </Frame>
-            </Grid>
 
-            <!-- Gráfico de Linha (Prevalência) -->
-            <Frame Grid.Row="3" BackgroundColor="#1E1E1E" CornerRadius="10" Padding="15">
-                <VerticalStackLayout>
-                    <Label Text="Prevalence" 
-                           FontSize="18" 
-                           FontAttributes="Bold" 
-                           TextColor="White"/>
-                    <GraphicsView x:Name="gsrGraphicsView" HeightRequest="200" WidthRequest="200">
-                        <GraphicsView.Drawable>
-                            <grafico:GsrWave/>
-                        </GraphicsView.Drawable>
-                    </GraphicsView>
-                </VerticalStackLayout>
-            </Frame>
+                </Grid>
+            </ScrollView>
 
-            <!-- Opções de Visualização (Diária/Semanal) -->
-            <Grid Grid.Row="4" ColumnDefinitions="*,*" ColumnSpacing="10">
-                <Button Text="Daily" 
-                        BackgroundColor="#333333" 
-                        TextColor="White" 
-                        CornerRadius="5"/>
-                <Button Text="Weekly" 
-                        Grid.Column="1" 
-                        BackgroundColor="#333333" 
-                        TextColor="White" 
-                        CornerRadius="5"/>
-            </Grid>
+            <ScrollView x:Name="ScrollConection" IsVisible="False" Grid.Column="1" Padding="10">
+                <StackLayout Padding="30" Spacing="15" BackgroundColor="#121212">
 
+                    <!-- Título -->
+                    <Label Text="Conectar ao ESP8266" 
+                        FontSize="28" 
+                        FontAttributes="Bold" 
+                        TextColor="#BB86FC"
+                        HorizontalOptions="Center"/>
+
+                    <BoxView Color="#BB86FC" HeightRequest="1" Margin="0,10"/>
+
+                    <!-- Campo Endereço IP -->
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#1E1E1E">
+                        <Entry x:Name="ipEntry" 
+                            Placeholder="Endereço IP do ESP8266" 
+                            PlaceholderColor="Gray"
+                            TextColor="White"
+                            FontSize="18"/>
+                    </Frame>
+
+                    <!-- Campo Porta -->
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#1E1E1E">
+                        <Entry x:Name="portEntry" 
+                            Placeholder="Porta (ex: 23)" 
+                            Keyboard="Numeric"
+                            PlaceholderColor="Gray"
+                            TextColor="White"
+                            FontSize="18"/>
+                    </Frame>
+
+                    <!-- Botão Conectar -->
+                    <Button Text="Conectar"
+                        TextColor="White"
+                        FontSize="20"
+                        BackgroundColor="#03DAC6"
+                        CornerRadius="10"
+                        Padding="10"
+                        Clicked="OnConnectClicked"/>
+
+                    <!-- Botão Conectar -->
+                    <Button x:Name="btnBack"
+                        Text="Voltar"
+                        TextColor="White"
+                        FontSize="20"
+                        BackgroundColor="Transparent"
+                        CornerRadius="10"
+                        Padding="10"
+                        Clicked="btnBack_Clicked"/>
+
+                    <!-- Status -->
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#1E1E1E">
+                        <Label x:Name="statusLabel" 
+                            Text="Status: Aguardando conexão..." 
+                            FontSize="18" 
+                            TextColor="White"
+                            HorizontalOptions="Center"/>
+                    </Frame>
+
+                </StackLayout>
+            </ScrollView>
         </Grid>
     </ScrollView>
-
 </ContentPage>

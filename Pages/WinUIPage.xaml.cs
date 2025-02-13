@@ -177,8 +177,7 @@ public partial class WinUIPage : ContentPage
             await Task.Delay(500); // Aguarda um pouco antes da próxima leitura
         }
     }
-
-    // Atualiza o status das lâmpadas na interface do usuário
+    
     private void UpdateStatus(string[] data)
     {
         if (data.Length >= 4)
