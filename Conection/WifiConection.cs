@@ -46,7 +46,7 @@ public class WifiConection
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro ao desconectar: {ex.Message}");
+           
         }
     }
 
@@ -62,12 +62,12 @@ public class WifiConection
             }
             else
             {
-                Console.WriteLine("Erro: Não conectado ao Arduino.");
+                
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro ao enviar dados: {ex.Message}");
+            
         }
     }
 

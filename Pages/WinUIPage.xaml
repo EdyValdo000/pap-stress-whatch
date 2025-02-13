@@ -3,73 +3,159 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:grafico="clr-namespace:pap.Graphics"
              x:Class="pap.Pages.WinUIPage"
-             Title="Monitoramento"
-             BackgroundColor="DarkCyan">
+             Title="Vital Flow Monitoring"
+             BackgroundColor="#121212">
+    <!-- Fundo escuro principal -->
+    <ScrollView>
+        <Grid ColumnDefinitions="200, *, 300" RowDefinitions="Auto, *">
 
-    <Grid RowDefinitions="Auto, *">
+            <!-- Menu Lateral (Esquerda) -->
+            <StackLayout Grid.Column="0" BackgroundColor="#1E1E1E" Padding="10">
+                <Button Text="Menu" HorizontalOptions="Start" Background="Transparent" TextColor="#BB86FC" FontAttributes="Bold" Clicked="Menu_Clicked"/>
+                <Button Text="Welcome"  HorizontalOptions="Center" Background="Transparent" TextColor="#BB86FC" FontAttributes="Bold" Margin="0" Clicked="Welcome_Clicked"/>
+                <Button Text="Multi-Monitor"  HorizontalOptions="Center" Background="Transparent" TextColor="#BB86FC" FontAttributes="Bold" Margin="0" Clicked="Multi_Monitor_Clicked"/>
+                <Button Text="Settings"  HorizontalOptions="Center" Background="Transparent" TextColor="#BB86FC" FontAttributes="Bold" Margin="0" Clicked="Settings_Clicked"/>
+            </StackLayout>
 
-        <!-- Título -->
-        <Label Text="Monitoramento de Sinais Vitais"
-               FontSize="24"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               Margin="10"/>
+            <!-- Painel Principal (Centro) -->
+            <ScrollView x:Name="ScrollMonitoring" Grid.Column="1" Padding="10">
+                <StackLayout x:Name="StackMonitoring">
 
-        <!-- Layout Principal -->
-        <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="10">
+                    <!-- Cabeçalho -->
+                    <Label Text="Vital Flow Monitoring" TextColor="#BB86FC" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    <BoxView Color="#BB86FC" HeightRequest="1" Margin="0,10"/>
 
-                <!-- Indicadores dos Sensores -->
-                <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" Margin="10">
+                    <!-- Seção de Indicadores -->
+                    <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" Margin="0,10">
+                        <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="#2C2C2C" CornerRadius="10" Padding="10">
+                            <StackLayout>
+                                <Label Text="11" TextColor="#BB86FC" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <Label Text="4.5" TextColor="#BB86FC" FontSize="16" HorizontalOptions="Center"/>
+                                <Label Text="Estatísticas Positivas" TextColor="#BB86FC" FontSize="12" HorizontalOptions="Center"/>
+                            </StackLayout>
+                        </Frame>
+                        <Frame Grid.Row="0" Grid.Column="1" BackgroundColor="#2C2C2C" CornerRadius="10" Padding="10">
+                            <StackLayout>
+                                <Label Text="682" TextColor="#FF6E6E" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <Label Text="Estatísticas Negativas" TextColor="#FF6E6E" FontSize="12" HorizontalOptions="Center"/>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
 
-                    <!-- Frequência Cardíaca -->
-                    <VerticalStackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Center">
-                        <Label Text="BPM" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" />
-                        <Button Text="Iniciar" Clicked="StartHeartRate" HorizontalOptions="Center"/>
-                        <GraphicsView x:Name="heartRateGraphicsView" HeightRequest="100" WidthRequest="300">
+                    <!-- Gráfico Principal -->
+                    <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#2C2C2C" CornerRadius="10" Padding="10" Margin="0,10">
+                        <GraphicsView x:Name="heartRateGraphicsView" HeightRequest="150">
                             <GraphicsView.Drawable>
                                 <grafico:HeartRateGraph/>
                             </GraphicsView.Drawable>
                         </GraphicsView>
-                    </VerticalStackLayout>
-
-                    <!-- Saturação de Oxigênio -->
-                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center">
-                        <Label Text="O₂ (%)" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
-                        <GraphicsView x:Name="oxygenGraphicsView" HeightRequest="150" WidthRequest="150">
-                            <GraphicsView.Drawable>
-                                <grafico:OxygenGauge/>
-                            </GraphicsView.Drawable>
-                        </GraphicsView>
-
-                        <Button Text="Atualizar Oxigênio" Clicked="OnValueChanged"/>
-                    </VerticalStackLayout>
-
-                    <!-- Temperatura Corporal -->
-                    <VerticalStackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="Center">
-                        <Label Text="Temp. (°C)" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
-                        <GraphicsView x:Name="temperatureGraphicsView" HeightRequest="300" WidthRequest="150">
-                            <GraphicsView.Drawable>
-                                <grafico:ThermometerGauge/>
-                            </GraphicsView.Drawable>
-                        </GraphicsView>
-                        <Button Clicked="Button_Clicked"/>
-                    </VerticalStackLayout>
-
-                    <!-- Condutividade da Pele -->
-                    <VerticalStackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Center">
-                        <Label Text="GSR" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
-                        <GraphicsView x:Name="gsrGraphicsView" HeightRequest="150" WidthRequest="150">
+                    </Frame>
+                    <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#2C2C2C" CornerRadius="10" Padding="10" Margin="0,10">
+                        <GraphicsView x:Name="gsrGraphicsView" HeightRequest="150">
                             <GraphicsView.Drawable>
                                 <grafico:GsrWave/>
                             </GraphicsView.Drawable>
                         </GraphicsView>
-                        <Button Clicked="OnGSRValueChanged"/>
-                    </VerticalStackLayout>
+                    </Frame>
 
-                </Grid>
-            </VerticalStackLayout>
-        </ScrollView>
+                    <Button Text="Actualizar" HorizontalOptions="Start" Background="Transparent" TextColor="Aqua" FontAttributes="Bold" Clicked="UpdateAll"/>
+                    
+                </StackLayout>
+            </ScrollView>
+            
+            <ScrollView x:Name="ScrollConection" IsVisible="False" Grid.Column="1" Padding="10">
+                <StackLayout Padding="30" Spacing="15" BackgroundColor="#121212">
 
-    </Grid>
+                    <!-- Título -->
+                    <Label Text="Conectar ao ESP8266" 
+                       FontSize="28" 
+                       FontAttributes="Bold" 
+                       TextColor="#BB86FC"
+                       HorizontalOptions="Center"/>
+
+                    <BoxView Color="#BB86FC" HeightRequest="1" Margin="0,10"/>
+
+                    <!-- Campo Endereço IP -->
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#1E1E1E">
+                        <Entry x:Name="ipEntry" 
+                           Placeholder="Endereço IP do ESP8266" 
+                           PlaceholderColor="Gray"
+                           TextColor="White"
+                           FontSize="18"/>
+                    </Frame>
+
+                    <!-- Campo Porta -->
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#1E1E1E">
+                        <Entry x:Name="portEntry" 
+                           Placeholder="Porta (ex: 23)" 
+                           Keyboard="Numeric"
+                           PlaceholderColor="Gray"
+                           TextColor="White"
+                           FontSize="18"/>
+                    </Frame>
+
+                    <!-- Botão Conectar -->
+                    <Button Text="Conectar"
+                        TextColor="White"
+                        FontSize="20"
+                        BackgroundColor="#03DAC6"
+                        CornerRadius="10"
+                        Padding="10"
+                        Clicked="OnConnectClicked"/>
+
+                    <!-- Status -->
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#1E1E1E">
+                        <Label x:Name="statusLabel" 
+                           Text="Status: Aguardando conexão..." 
+                           FontSize="18" 
+                           TextColor="White"
+                           HorizontalOptions="Center"/>
+                    </Frame>
+
+                </StackLayout>
+            </ScrollView>
+
+            <ScrollView x:Name="ScrollWelcome" IsVisible="False" Grid.Column="1" Padding="10">
+                <StackLayout Padding="30" Spacing="15" BackgroundColor="#121212">
+
+                    <!-- Título -->
+                    <Label Text="Bem vindo..." 
+                       FontSize="28" 
+                       FontAttributes="Bold" 
+                       TextColor="#BB86FC"
+                       HorizontalOptions="Center"/>
+
+                    <BoxView Color="#BB86FC" HeightRequest="1" Margin="0,10"/>
+
+                    <!-- Campo Endereço IP -->
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#1E1E1E">
+                        <Label x:Name="WelcomeLabel"               
+                           TextColor="White"
+                           FontSize="18"/>
+                    </Frame>
+
+                </StackLayout>
+            </ScrollView>
+
+            <!-- Painel Direito (Gráficos) -->
+            <StackLayout x:Name="StackOxyAndTemp" Grid.Column="2" BackgroundColor="#1E1E1E" Padding="10">
+                <Frame BackgroundColor="#2C2C2C" CornerRadius="10" Padding="10" Margin="0,10">
+                    <GraphicsView x:Name="oxygenGraphicsView" HeightRequest="150" WidthRequest="150">
+                        <GraphicsView.Drawable>
+                            <grafico:OxygenGauge/>
+                        </GraphicsView.Drawable>
+                    </GraphicsView>
+                </Frame>
+                <Frame BackgroundColor="#2C2C2C" CornerRadius="10" Padding="10" Margin="0,10">
+                    <GraphicsView x:Name="temperatureGraphicsView" HeightRequest="350">
+                        <GraphicsView.Drawable>
+                            <grafico:ThermometerGauge/>
+                        </GraphicsView.Drawable>
+                    </GraphicsView>
+                </Frame>
+            </StackLayout>
+
+        </Grid>
+    </ScrollView>
+    
 </ContentPage>
