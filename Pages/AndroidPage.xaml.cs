@@ -1,8 +1,8 @@
 using pap.Conection;
 using pap.Graphics;
+using StressWhatsh.Services;
 
 namespace pap.Pages;
-
 public partial class AndroidPage : ContentPage
 {
     private HeartRateGraph heartRateGraph = new HeartRateGraph();
@@ -12,32 +12,41 @@ public partial class AndroidPage : ContentPage
 
     private readonly WifiConection Esp8266 = new();
 
+    //private readonly StressPredictionService stressPredictionService;
+
     public AndroidPage()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         heartRateGraphicsView.Drawable = heartRateGraph;
         oxygenGraphicsView.Drawable = oxygenGauge;
         temperatureGraphicsView.Drawable = thermometerGauge;
         gsrGraphicsView.Drawable = gsrWave;
+
+        //stressPredictionService = new StressPredictionService();
     }
-    
+
     #region Animations graphics
+    private CancellationTokenSource oxygenAnimationToken;
+
     private void StartECGAnimation()
     {
         Device.StartTimer(TimeSpan.FromMilliseconds(50), () =>
         {
-            heartRateGraphicsView.Invalidate(); // Redesenha a linha animada
-            return true; // Continua executando
+            heartRateGraphicsView.Invalidate();
+            return animationsRunning; // Continua executando se estiver ativo
         });
     }
 
     private async void StartOxygenGaugeAnimation()
     {
-        while (true)
+        oxygenAnimationToken = new CancellationTokenSource();
+        var token = oxygenAnimationToken.Token;
+
+        while (!token.IsCancellationRequested)
         {
-            oxygenGraphicsView.Invalidate(); // Atualiza o desenho
-            await Task.Delay(50); // Atualiza a animação suavemente
+            oxygenGraphicsView.Invalidate();
+            await Task.Delay(50);
         }
     }
 
@@ -45,17 +54,27 @@ public partial class AndroidPage : ContentPage
     {
         Device.StartTimer(TimeSpan.FromMilliseconds(50), () =>
         {
-            gsrGraphicsView.Invalidate(); // Redesenha a linha animada
-            return true; // Continua executando
+            gsrGraphicsView.Invalidate();
+            return animationsRunning; // Continua executando se estiver ativo
         });
     }
 
+    private bool animationsRunning = false;
+
     private void StartAnimations()
     {
+        animationsRunning = true;
         StartGSRAnimation();
         StartECGAnimation();
         StartOxygenGaugeAnimation();
     }
+
+    private void StopAnimations()
+    {
+        animationsRunning = false;
+        oxygenAnimationToken?.Cancel(); // Interrompe a animação do oxigênio
+    }
+
     #endregion
 
     #region Random Update
@@ -92,12 +111,21 @@ public partial class AndroidPage : ContentPage
     }
     #endregion
 
-    private void RandomUpdate()
+    private /*async*/ void RandomUpdate()
     {
         OnGSRValueChanged();
         TemperatureUpdate();
         OxygenUpdate();
         HeartRateUpdate();
+
+        //var StressLevel = stressPredictionService.PredictStressLevel(
+        //    heartRateGraph.CurrentBPM,
+        //    float.Parse(thermometerGauge.Value.ToString()),
+        //    float.Parse(oxygenGauge.Value.ToString()),
+        //    float.Parse(gsrWave.Value.ToString())
+        //);
+
+        //await DisplayAlert("Nível de Estresse", StressLevel.ToString(), "OK");
     }
 
     #region Navigations Buttons  
@@ -156,7 +184,7 @@ public partial class AndroidPage : ContentPage
             temperatureGraphicsView.FadeTo(1, 300, Easing.CubicIn),
             temperatureGraphicsView.TranslateTo(0, 0, 300, Easing.CubicOut)
         );
-    }     
+    }
 
     private async Task HideGraphics()
     {
@@ -253,6 +281,10 @@ public partial class AndroidPage : ContentPage
             {
                 StartAnimations();
                 statusLabel.Text = "Conectado!";
+                btnDesconectar.IsVisible = true;
+                btnConectar.IsVisible = false;
+                ipEntry.IsEnabled = false;
+                portEntry.IsEnabled = false;
                 _ = Task.Run(ReadEsp8266DataAsync);
             }
             else
@@ -274,7 +306,6 @@ public partial class AndroidPage : ContentPage
             try
             {
                 string receber = Esp8266.Read()!;
-
                 if (!string.IsNullOrEmpty(receber))
                 {
                     string[] data = receber.Split('#');
@@ -288,27 +319,57 @@ public partial class AndroidPage : ContentPage
             }
             catch (Exception ex)
             {
-
                 break; // Termina o loop em caso de erro crítico
             }
 
-            await Task.Delay(500); // Aguarda um pouco antes da próxima leitura
+            await Task.Delay(1000); // Aguarda um pouco antes da próxima leitura
         }
     }
 
-    private void UpdateStatus(string[] data)
+    private async void UpdateStatus(string[] data)
     {
         if (data.Length >= 4)
         {
-            heartRateGraph.UpdateBPM(float.Parse(data[0]));
-            oxygenGauge.UpdateValue(double.Parse(data[1]));
-            thermometerGauge.UpdateValue(double.Parse(data[2]));
-            gsrWave.UpdateValue(double.Parse(data[3]));
+            try
+            {
+                float bpm = float.Parse(data[0]);
+                double oxygen = double.Parse(data[1]);
+                double temperature = double.Parse(data[2]);
+                double gsr = double.Parse(data[3]);
+                
+                heartRateGraph.UpdateBPM(bpm);
+                oxygenGauge.UpdateValue(oxygen);
+                thermometerGauge.UpdateValue(temperature);
+                gsrWave.UpdateValue(gsr);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", ex.Message, "OK");
+            }
 
             gsrGraphicsView.Invalidate();
             temperatureGraphicsView.Invalidate();
             oxygenGraphicsView.Invalidate();
             heartRateGraphicsView.Invalidate();
         }
+    }
+
+    private void OffConnectClicked(object sender, EventArgs e)
+    {
+        if (Esp8266.IsConected())
+        {
+            Esp8266.Desconected();
+            btnDesconectar.IsVisible = false;
+            btnConectar.IsVisible = true;
+            statusLabel.Text = "Desconectado!";
+            ipEntry.IsEnabled = true;
+            portEntry.IsEnabled = true;
+            StopAnimations();
+        }
+    }
+
+    private void btnActualizar_Clicked(object sender, EventArgs e)
+    {
+        RandomUpdate();
     }
 }

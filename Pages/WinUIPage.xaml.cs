@@ -15,33 +15,36 @@ public partial class WinUIPage : ContentPage
     private readonly WifiConection Esp8266 = new();
 
     public WinUIPage()
-	{
-		InitializeComponent();
-        
+    {
+        InitializeComponent();
+
         heartRateGraphicsView.Drawable = heartRateGraph;
         oxygenGraphicsView.Drawable = oxygenGauge;
         temperatureGraphicsView.Drawable = thermometerGauge;
         gsrGraphicsView.Drawable = gsrWave;
-
-        StartAnimations();
     }
 
     #region Animations graphics
+    private CancellationTokenSource oxygenAnimationToken;
+
     private void StartECGAnimation()
     {
         Device.StartTimer(TimeSpan.FromMilliseconds(50), () =>
         {
-            heartRateGraphicsView.Invalidate(); // Redesenha a linha animada
-            return true; // Continua executando
+            heartRateGraphicsView.Invalidate();
+            return animationsRunning; // Continua executando se estiver ativo
         });
     }
 
     private async void StartOxygenGaugeAnimation()
     {
-        while (true)
+        oxygenAnimationToken = new CancellationTokenSource();
+        var token = oxygenAnimationToken.Token;
+
+        while (!token.IsCancellationRequested)
         {
-            oxygenGraphicsView.Invalidate(); // Atualiza o desenho
-            await Task.Delay(50); // Atualiza a animação suavemente
+            oxygenGraphicsView.Invalidate();
+            await Task.Delay(50);
         }
     }
 
@@ -49,17 +52,27 @@ public partial class WinUIPage : ContentPage
     {
         Device.StartTimer(TimeSpan.FromMilliseconds(50), () =>
         {
-            gsrGraphicsView.Invalidate(); // Redesenha a linha animada
-            return true; // Continua executando
+            gsrGraphicsView.Invalidate();
+            return animationsRunning; // Continua executando se estiver ativo
         });
     }
-    
+
+    private bool animationsRunning = false;
+
     private void StartAnimations()
-    {        
+    {
+        animationsRunning = true;
         StartGSRAnimation();
         StartECGAnimation();
         StartOxygenGaugeAnimation();
     }
+
+    private void StopAnimations()
+    {
+        animationsRunning = false;
+        oxygenAnimationToken?.Cancel(); // Interrompe a animação do oxigênio
+    }
+
     #endregion
 
     #region Random Update
@@ -69,7 +82,7 @@ public partial class WinUIPage : ContentPage
         float newBPM = rnd.Next(60, 120); // Gera um BPM aleatório entre 60 e 120
         heartRateGraph.UpdateBPM(newBPM); // Atualiza apenas o BPM
         heartRateGraphicsView.Invalidate(); // Redesenha sem reiniciar a onda
-    }   
+    }
 
     private void OxygenUpdate()
     {
@@ -78,7 +91,7 @@ public partial class WinUIPage : ContentPage
         oxygenGauge.UpdateValue(newValue);
         oxygenGraphicsView.Invalidate(); // Atualiza o gráfico
     }
-    
+
     private void TemperatureUpdate()
     {
         Random random = new Random();
@@ -99,9 +112,9 @@ public partial class WinUIPage : ContentPage
 
     private void UpdateAll(object sender, EventArgs e)
     {
-        RandomUpdate();
+        RandomUpdate();       
     }
-    
+
     private void RandomUpdate()
     {
         OnGSRValueChanged();
@@ -125,7 +138,7 @@ public partial class WinUIPage : ContentPage
             statusLabel.Text = "Porta inválida!";
             return;
         }
-        
+
         Int16 port = Convert.ToInt16(portEntry.Text);
 
         try
@@ -135,13 +148,17 @@ public partial class WinUIPage : ContentPage
             {
                 StartAnimations();
                 statusLabel.Text = "Conectado!";
+                btnDesconectar.IsVisible = true;
+                btnConectar.IsVisible = false;
+                ipEntry.IsEnabled = false;
+                portEntry.IsEnabled = false;
                 _ = Task.Run(ReadEsp8266DataAsync);
             }
             else
             {
                 statusLabel.Text = "Ainda não estás conectado";
             }
-            
+
         }
         catch (Exception ex)
         {
@@ -156,12 +173,10 @@ public partial class WinUIPage : ContentPage
             try
             {
                 string receber = Esp8266.Read()!;
-
                 if (!string.IsNullOrEmpty(receber))
                 {
                     string[] data = receber.Split('#');
-
-                    // Atualiza o estado das lâmpadas na UI thread
+                    
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         UpdateStatus(data);
@@ -170,27 +185,43 @@ public partial class WinUIPage : ContentPage
             }
             catch (Exception ex)
             {
-                
-                break; // Termina o loop em caso de erro crítico
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
-
-            await Task.Delay(500); // Aguarda um pouco antes da próxima leitura
+            finally
+            {
+                await Task.Delay(300); // Aguarda um pouco antes da próxima leitura
+            }
         }
     }
-    
+
     private void UpdateStatus(string[] data)
     {
         if (data.Length >= 4)
         {
-            heartRateGraph.UpdateBPM(float.Parse(data[0]));
-            oxygenGauge.UpdateValue(double.Parse(data[1]));
-            thermometerGauge.UpdateValue(double.Parse(data[2]));
-            gsrWave.UpdateValue(double.Parse(data[3]));
+            try
+            {       
+                float bpm = float.Parse(data[0]);
+                double oxygen = double.Parse(data[1]);
+                double temperature = double.Parse(data[2]);
+                double gsr = double.Parse(data[3]);
 
-            gsrGraphicsView.Invalidate();
-            temperatureGraphicsView.Invalidate();
-            oxygenGraphicsView.Invalidate();
-            heartRateGraphicsView.Invalidate();
+                //heartRateGraph.UpdateBPM(bpm);
+                
+                oxygenGauge.UpdateValue(oxygen);
+                thermometerGauge.UpdateValue(temperature);
+                gsrWave.UpdateValue(gsr);                
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Erro", ex.Message, "OK");
+            }
+            finally
+            {
+                gsrGraphicsView.Invalidate();
+                temperatureGraphicsView.Invalidate();
+                oxygenGraphicsView.Invalidate();
+                heartRateGraphicsView.Invalidate();
+            }
         }
     }
 
@@ -268,9 +299,22 @@ public partial class WinUIPage : ContentPage
     }
     #endregion
 
-
     private void Menu_Clicked(object sender, EventArgs e)
     {
 
+    }
+
+    private void OffConnectClicked(object sender, EventArgs e)
+    {
+        if (Esp8266.IsConected())
+        {
+            Esp8266.Desconected();
+            btnDesconectar.IsVisible = false;
+            btnConectar.IsVisible = true;
+            statusLabel.Text = "Desconectado!";
+            ipEntry.IsEnabled = true;
+            portEntry.IsEnabled = true;
+            StopAnimations();
+        }
     }
 }

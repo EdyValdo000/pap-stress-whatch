@@ -11,6 +11,7 @@ namespace pap.Graphics
         private int _maxPoints = 500; // Aumentado para dar mais espaço entre os batimentos
         private float _time = 0;
         private float _waveSpeed = 1f;
+        public float CurrentBPM => _currentBPM;
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
@@ -71,6 +72,7 @@ namespace pap.Graphics
         {
             _points.Clear();
             float frequency = _currentBPM / 60f;
+            frequency = frequency < 1 ? 1 : frequency;
             float step = 2 * MathF.PI / _maxPoints;
             Random rand = new Random();
 

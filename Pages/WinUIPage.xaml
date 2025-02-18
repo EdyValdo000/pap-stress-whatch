@@ -95,13 +95,24 @@
                     </Frame>
 
                     <!-- Botão Conectar -->
-                    <Button Text="Conectar"
+                    <Button x:Name="btnConectar"
+                        Text="Conectar"
                         TextColor="White"
                         FontSize="20"
                         BackgroundColor="#03DAC6"
                         CornerRadius="10"
                         Padding="10"
                         Clicked="OnConnectClicked"/>
+
+                    <Button Text="Desconectar"
+                         x:Name="btnDesconectar"
+                         IsVisible="False"
+                         TextColor="Red"
+                         FontSize="20"
+                         BackgroundColor="Transparent"
+                         CornerRadius="10"
+                         Padding="10"
+                         Clicked="OffConnectClicked"/>
 
                     <!-- Status -->
                     <Frame CornerRadius="10" Padding="10" BackgroundColor="#1E1E1E">
