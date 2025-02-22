@@ -13,7 +13,9 @@
 
                     <!-- Barra Superior (AppBar) -->
                     <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
-                        <Label Text="Stress Watch" 
+                        <Label 
+                            x:Name="lbStressWatch"
+                            Text="Stress Watch" 
             FontSize="24" 
             FontAttributes="Bold" 
             TextColor="White" 
@@ -223,23 +225,23 @@
                     </Frame>
 
                     <!-- Botão Conectar -->
-                    <Button Text="Conectar"
-                        x:Name="btnConectar"
+                    <Button Text="Conectar"                        
                         TextColor="White"
                         FontSize="20"
                         BackgroundColor="#03DAC6"
                         CornerRadius="10"
                         Padding="10"
+                        x:Name="btnConectar"
                         Clicked="OnConnectClicked"/>
 
                     <Button Text="Desconectar"
-                         IsVisible="False"
-                         x:Name="btnDesconectar"
+                         IsVisible="False"                         
                          TextColor="Red"
                          FontSize="20"
                          BackgroundColor="Transparent"
                          CornerRadius="10"
                          Padding="10"
+                         x:Name="btnDesconectar"
                          Clicked="OffConnectClicked"/>
 
                     <!-- Botão Conectar -->

@@ -44,14 +44,14 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android35.0|AnyCPU'">
 	  <AndroidPackageFormat>apk</AndroidPackageFormat>
 	  <AndroidUseAapt2>True</AndroidUseAapt2>
-	  <AndroidCreatePackagePerAbi>True</AndroidCreatePackagePerAbi>
+	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
 	  <ApplicationIdGuid>D18B20</ApplicationIdGuid>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android35.0|AnyCPU'">
 	  <AndroidUseAapt2>True</AndroidUseAapt2>
-	  <AndroidCreatePackagePerAbi>True</AndroidCreatePackagePerAbi>
+	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
 	  <AndroidPackageFormat>apk</AndroidPackageFormat>
 	  <ApplicationIdGuid>D18B20</ApplicationIdGuid>
 	  <AndroidKeyStore>False</AndroidKeyStore>
@@ -99,10 +99,12 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\appicon.jpg" />
+	  <None Remove="Resources\AppIcon\appiconfg.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiIcon Include="Resources\AppIcon\appicon.jpg" />
+	  <MauiIcon Include="Resources\AppIcon\appiconfg.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -114,8 +116,8 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-		<PackageReference Include="Microsoft.ML" Version="4.0.1" />
-		<PackageReference Include="Microsoft.ML.AutoML" Version="0.22.1" />
+		<PackageReference Include="Microsoft.ML" Version="4.0.0" />
+		<PackageReference Include="Microsoft.ML.LightGbm" Version="4.0.0" />
 		<PackageReference Include="Plotly.NET" Version="3.0.1" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 	</ItemGroup>
@@ -136,6 +138,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="ML\stress_data.csv">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 	  <None Update="Resources\Splash\splash2.svg" Color="#512BD4" BaseSize="128,128" />
 	</ItemGroup>

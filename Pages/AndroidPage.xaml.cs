@@ -1,6 +1,6 @@
 using pap.Conection;
 using pap.Graphics;
-using StressWhatsh.Services;
+using StressWatchML;
 
 namespace pap.Pages;
 public partial class AndroidPage : ContentPage
@@ -12,8 +12,6 @@ public partial class AndroidPage : ContentPage
 
     private readonly WifiConection Esp8266 = new();
 
-    //private readonly StressPredictionService stressPredictionService;
-
     public AndroidPage()
     {
         InitializeComponent();
@@ -22,8 +20,6 @@ public partial class AndroidPage : ContentPage
         oxygenGraphicsView.Drawable = oxygenGauge;
         temperatureGraphicsView.Drawable = thermometerGauge;
         gsrGraphicsView.Drawable = gsrWave;
-
-        //stressPredictionService = new StressPredictionService();
     }
 
     #region Animations graphics
@@ -74,58 +70,61 @@ public partial class AndroidPage : ContentPage
         animationsRunning = false;
         oxygenAnimationToken?.Cancel(); // Interrompe a animação do oxigênio
     }
-
     #endregion
 
     #region Random Update
-    private void HeartRateUpdate()
+    private double HeartRateUpdate()
     {
         Random rnd = new Random();
         float newBPM = rnd.Next(60, 120); // Gera um BPM aleatório entre 60 e 120
         heartRateGraph.UpdateBPM(newBPM); // Atualiza apenas o BPM
         heartRateGraphicsView.Invalidate(); // Redesenha sem reiniciar a onda
+        return newBPM;
     }
 
-    private void OxygenUpdate()
+    private double OxygenUpdate()
     {
         Random random = new Random();
         double newValue = random.Next(0, 101); // Gera um valor aleatório de 0 a 100
         oxygenGauge.UpdateValue(newValue);
         oxygenGraphicsView.Invalidate(); // Atualiza o gráfico
+        return newValue;
     }
 
-    private void TemperatureUpdate()
+    private double TemperatureUpdate()
     {
         Random random = new Random();
         double newValue = random.Next(35, 42); // Gera um valor aleatório de 0 a 100
         thermometerGauge.UpdateValue(newValue);
         temperatureGraphicsView.Invalidate(); // Atualiza o gráfico
+        return newValue;
     }
 
-    private void OnGSRValueChanged()
+    private double OnGSRValueChanged()
     {
         Random random = new Random();
         double newValue = random.Next(0, 101); // Gera um valor aleatório de 0 a 100
         gsrWave.UpdateValue(newValue);
         gsrGraphicsView.Invalidate(); // Atualiza o gráfico
+        return newValue;
     }
     #endregion
 
-    private /*async*/ void RandomUpdate()
+    private async void RandomUpdate()
     {
-        OnGSRValueChanged();
-        TemperatureUpdate();
-        OxygenUpdate();
-        HeartRateUpdate();
+        double NewGSR = OnGSRValueChanged();
+        double NewTemp = TemperatureUpdate();
+        double NewOxy = OxygenUpdate();
+        double NewBPM = HeartRateUpdate();
 
-        //var StressLevel = stressPredictionService.PredictStressLevel(
-        //    heartRateGraph.CurrentBPM,
-        //    float.Parse(thermometerGauge.Value.ToString()),
-        //    float.Parse(oxygenGauge.Value.ToString()),
-        //    float.Parse(gsrWave.Value.ToString())
-        //);
+        //Load sample data
+        var sampleData = new MLStress.ModelInput()
+        { BPM = (float)NewBPM, SpO2 = (float)NewOxy, GSR = (float)NewGSR, Temp = (float)NewTemp };
 
-        //await DisplayAlert("Nível de Estresse", StressLevel.ToString(), "OK");
+        //Load model and predict output
+        var result = MLStress.Predict(sampleData);
+
+        lbStressWatch.Text = "Stress Watch: " + result.Score.ToString();
     }
 
     #region Navigations Buttons  

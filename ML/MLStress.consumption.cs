@@ -5,12 +5,12 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
-namespace Pap
+namespace StressWatchML
 {
-    public partial class MLModel1
+    public partial class MLStress
     {
         /// <summary>
-        /// model input class for MLModel1.
+        /// model input class for MLStress.
         /// </summary>
         #region model input class
         public class ModelInput
@@ -20,27 +20,26 @@ namespace Pap
             public float BPM { get; set; }
 
             [LoadColumn(1)]
-            [ColumnName(@"SpO2 (%)")]
-            public float SpO2____ { get; set; }
+            [ColumnName(@"SpO2")]
+            public float SpO2 { get; set; }
 
             [LoadColumn(2)]
-            [ColumnName(@"GSR (kΩ)")]
-            public float GSR__kΩ_ { get; set; }
+            [ColumnName(@"GSR")]
+            public float GSR { get; set; }
 
             [LoadColumn(3)]
-            [ColumnName(@"Temp (°C)")]
-            public float Temp___C_ { get; set; }
+            [ColumnName(@"Temp")]
+            public float Temp { get; set; }
 
             [LoadColumn(4)]
             [ColumnName(@"Nível de Estresse")]
             public float Nível_de_Estresse { get; set; }
-
         }
 
         #endregion
 
         /// <summary>
-        /// model output class for MLModel1.
+        /// model output class for MLStress.
         /// </summary>
         #region model output class
         public class ModelOutput
@@ -48,14 +47,14 @@ namespace Pap
             [ColumnName(@"BPM")]
             public float BPM { get; set; }
 
-            [ColumnName(@"SpO2 (%)")]
-            public float SpO2____ { get; set; }
+            [ColumnName(@"SpO2")]
+            public float SpO2 { get; set; }
 
-            [ColumnName(@"GSR (kΩ)")]
-            public float GSR__kΩ_ { get; set; }
+            [ColumnName(@"GSR")]
+            public float GSR { get; set; }
 
-            [ColumnName(@"Temp (°C)")]
-            public float Temp___C_ { get; set; }
+            [ColumnName(@"Temp")]
+            public float Temp { get; set; }
 
             [ColumnName(@"Nível de Estresse")]
             public float Nível_de_Estresse { get; set; }
@@ -70,15 +69,13 @@ namespace Pap
 
         #endregion
 
-        private static string MLNetModelPath = Path.GetFullPath("MLModel1.mlnet");
+        public static readonly Lazy<PredictionEngine<ModelInput, ModelOutput>> PredictEngine = new Lazy<PredictionEngine<ModelInput, ModelOutput>>(() => CreatePredictEngine().Result, true);
 
-        public static readonly Lazy<PredictionEngine<ModelInput, ModelOutput>> PredictEngine = new Lazy<PredictionEngine<ModelInput, ModelOutput>>(() => CreatePredictEngine(), true);
-
-
-        private static PredictionEngine<ModelInput, ModelOutput> CreatePredictEngine()
+        private static async Task<PredictionEngine<ModelInput, ModelOutput>> CreatePredictEngine()
         {
             var mlContext = new MLContext();
-            ITransformer mlModel = mlContext.Model.Load(MLNetModelPath, out var _);
+            using var stream = await FileSystem.OpenAppPackageFileAsync("MLStress.mlnet");
+            ITransformer mlModel = mlContext.Model.Load(stream, out var _);
             return mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
         }
 
