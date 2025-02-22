@@ -85,7 +85,6 @@ public partial class MainPage : ContentPage
         {
             Name = await DisplayPromptAsync("Nome","Digite o seu nome", "Ok", "Cancelar"),
             Gender = await DisplayActionSheet("Gênero", "Cancelar", null, "Masculino", "Feminino", "Outro"),
-            Age = Convert.ToInt32(await DisplayPromptAsync("Idade", "Digite a sua idade", "Ok", "Cancelar"))
         };
 
         await App.UserService!.Save(user);

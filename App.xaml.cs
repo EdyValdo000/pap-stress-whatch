@@ -5,19 +5,15 @@ using pap.Service;
 namespace pap;
 public partial class App : Application
 {
-    public static UserService? UserService { get; private set; }
-    public static SensorDataService? SensorDataService { get; private set; }
-    public static MonitoringSessionService? MonitoringSessionService { get; private set; }
-    public static AIRecommendationService? AIRecommendationService { get; private set; }
+    public static UserService? UserService { get; set; }
+    public static SensorDataService? SensorDataService { get; set; }
 
     public App()
     {
         InitializeComponent();
 
         UserService = new UserService(new UserRepository());
-        SensorDataService = new SensorDataService(new HeartOximeterDataRepository(), new TemperatureDataRepository(), new GSRDataRepository());
-        MonitoringSessionService = new MonitoringSessionService(new MonitoringSessionRepository());
-        AIRecommendationService = new AIRecommendationService(new AIRecommendationRepository());
+        SensorDataService = new SensorDataService(new SensorDataRepository());       
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
@@ -26,7 +22,7 @@ public partial class App : Application
 
         if (DeviceInfo.Current.Platform == DevicePlatform.Android)
         {
-            startPage = new AndroidPage();
+            startPage = new LoginPage();
         }
         else if (DeviceInfo.Current.Platform == DevicePlatform.WinUI)
         {
@@ -34,7 +30,7 @@ public partial class App : Application
         }
         else
         {
-            startPage = new AndroidPage(); // Página padrão (pode ser alterada)
+            startPage = new LoginPage(); // Página padrão (pode ser alterada)
         }
 
         return new Window(startPage);

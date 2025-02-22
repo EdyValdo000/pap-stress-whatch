@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="pap.Pages.CreateAccountPage"
+             BackgroundColor="#121212"
+             Title="Criar Conta">
+
+    <ScrollView>
+        <StackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+
+            <!-- Título -->
+            <Label Text="Criar Conta" 
+                   FontSize="32" 
+                   FontAttributes="Bold" 
+                   TextColor="#BB86FC"
+                   HorizontalOptions="Center"/>
+
+            <BoxView Color="#BB86FC" HeightRequest="1" Margin="0,10"/>
+
+            <!-- Campo de Nome -->
+            <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="#1E1E1E">
+                <Entry x:Name="nameEntry" 
+                       Placeholder="Nome" 
+                       PlaceholderColor="Gray"
+                       TextColor="White"
+                       FontSize="18"/>
+            </Border>
+
+            <!-- Campo de Gênero -->
+            <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="#1E1E1E">
+                <Picker x:Name="genderPicker"
+                    Title="Selecione o gênero"
+                    TextColor="White"
+                    FontSize="18"
+                    TitleColor="Gray">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Masculino</x:String>
+                            <x:String>Feminino</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </Border>
+
+            <!-- Campo de Senha -->
+            <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="#1E1E1E">
+                <Entry x:Name="passwordEntry" 
+                       Placeholder="Senha" 
+                       PlaceholderColor="Gray"
+                       TextColor="White"
+                       FontSize="18"
+                       IsPassword="True"/>
+            </Border>
+
+            <!-- Botão de Criar Conta -->
+            <Button Text="Criar Conta" 
+                    BackgroundColor="#03DAC6" 
+                    TextColor="White"
+                    FontSize="20"
+                    CornerRadius="10"
+                    Padding="10"
+                    Clicked="OnCreateAccountClicked"/>
+
+            <Button Text="Voltar" 
+                BackgroundColor="Transparent" 
+                TextColor="Red"
+                Clicked="OnLogoutClicked"/>
+
+            <!-- Mensagem de Erro -->
+            <Label x:Name="errorLabel" 
+                   TextColor="Red" 
+                   FontSize="14"
+                   HorizontalOptions="Center"
+                   IsVisible="False"/>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

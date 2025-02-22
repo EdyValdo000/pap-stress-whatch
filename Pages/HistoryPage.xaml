@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="pap.Pages.HistoryPage"
+             BackgroundColor="#121212"
+             Title="Histórico">
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+
+            <!-- Título -->
+            <Label Text="Histórico de Dados" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   TextColor="#BB86FC"
+                   HorizontalOptions="Center"/>
+
+            <BoxView Color="#BB86FC" HeightRequest="1" Margin="0,10"/>
+
+            <!-- Lista de Histórico -->
+            <CollectionView x:Name="historyCollectionView">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeShape="RoundRectangle 10" Padding="15" BackgroundColor="#1E1E1E">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Date}" 
+                                       FontSize="18" 
+                                       TextColor="White"/>
+                                <Label Text="{Binding Description}" 
+                                       FontSize="14" 
+                                       TextColor="White"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Botão Voltar -->
+            <Button x:Name="btnBack"
+                    Text="Voltar"
+                    BackgroundColor="Transparent"
+                    TextColor="#BB86FC"
+                    FontSize="18"
+                    CornerRadius="10"
+                    Padding="10"
+                    Clicked="btnBack_Clicked"
+                    HorizontalOptions="Center"/>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

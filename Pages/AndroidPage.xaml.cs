@@ -1,5 +1,6 @@
 using pap.Conection;
 using pap.Graphics;
+using pap.Model;
 using StressWatchML;
 
 namespace pap.Pages;
@@ -10,9 +11,13 @@ public partial class AndroidPage : ContentPage
     private ThermometerGauge thermometerGauge = new ThermometerGauge();
     private GsrWave gsrWave = new GsrWave();
 
+    private float _BPM, _Oxy, _GSR, _Temp;
+
     private readonly WifiConection Esp8266 = new();
 
-    public AndroidPage()
+    private User User;
+
+    public AndroidPage(User User)
     {
         InitializeComponent();
 
@@ -20,6 +25,8 @@ public partial class AndroidPage : ContentPage
         oxygenGraphicsView.Drawable = oxygenGauge;
         temperatureGraphicsView.Drawable = thermometerGauge;
         gsrGraphicsView.Drawable = gsrWave;
+
+        this.User = User;
     }
 
     #region Animations graphics
@@ -110,7 +117,7 @@ public partial class AndroidPage : ContentPage
     }
     #endregion
 
-    private async void RandomUpdate()
+    private void RandomUpdate()
     {
         double NewGSR = OnGSRValueChanged();
         double NewTemp = TemperatureUpdate();
@@ -124,6 +131,20 @@ public partial class AndroidPage : ContentPage
         //Load model and predict output
         var result = MLStress.Predict(sampleData);
 
+        //Load sample data
+        var sampleDataStressLevel = new MLStressInsides.ModelInput()
+        {
+            BPM = result.BPM,
+            SpO2 = result.SpO2,
+            GSR = result.GSR, 
+            Temp = result.Temp,
+            Nível_de_Estresse = result.Score
+        };
+
+        //Load model and predict output
+        var resultRecomendations = MLStressInsides.Predict(sampleDataStressLevel);
+
+        lbRecomendations.Text = resultRecomendations.PredictedLabel;
         lbStressWatch.Text = "Stress Watch: " + result.Score.ToString();
     }
 
@@ -219,10 +240,14 @@ public partial class AndroidPage : ContentPage
         if (ScrollConection.IsVisible)
             fadeOutTasks.Add(ScrollConection.FadeTo(0, 200, Easing.CubicOut));
 
+        if (ScrollRecommendations.IsVisible)
+            fadeOutTasks.Add(ScrollRecommendations.FadeTo(0, 200, Easing.CubicOut));
+
         await Task.WhenAll(fadeOutTasks);
 
         ScrollMonitoring.IsVisible = false;
         ScrollConection.IsVisible = false;
+        ScrollRecommendations.IsVisible = false;
     }
 
     private async void btnConecao_Clicked(object sender, EventArgs e)
@@ -253,8 +278,73 @@ public partial class AndroidPage : ContentPage
         );
     }
 
+    private async void btnRecommendations_Clicked(object sender, EventArgs e)
+    {
+        //Load sample data
+        var sampleData = new MLStress.ModelInput()
+        { BPM = _BPM, SpO2 = _Oxy, GSR = _GSR, Temp = _Temp };
+
+        //Load model and predict output
+        var result = MLStress.Predict(sampleData);
+
+        //Load sample data
+        var sampleDataStressLevel = new MLStressInsides.ModelInput()
+        {
+            BPM = result.BPM,
+            SpO2 = result.SpO2,
+            GSR = result.GSR,
+            Temp = result.Temp,
+            Nível_de_Estresse = result.Score
+        };
+
+        //Load model and predict output
+        var resultRecomendations = MLStressInsides.Predict(sampleDataStressLevel);
+
+        lbRecomendations.Text = resultRecomendations.PredictedLabel;
+
+        var guardar = new SensorData
+        {
+            BPM = resultRecomendations.BPM,
+            GSR = resultRecomendations.GSR,
+            SpO2 = resultRecomendations.SpO2,
+            Temperature = resultRecomendations.Temp,
+            StressLevel = resultRecomendations.Nível_de_Estresse,
+            UserId = User.Id,
+            Advice = resultRecomendations.PredictedLabel,
+            Timestamp = DateTime.UtcNow
+        };
+
+        await App.SensorDataService!.Save(guardar);
+
+        await HideScrolls();
+
+        ScrollRecommendations.Opacity = 0;
+        ScrollRecommendations.TranslationY = 20;
+        ScrollRecommendations.IsVisible = true;
+
+        await Task.WhenAll(
+            ScrollRecommendations.FadeTo(1, 300, Easing.CubicIn),
+            ScrollRecommendations.TranslateTo(0, 0, 300, Easing.CubicOut)
+        );
+    }
+
+    private async void btnBackRecommendations_Clicked(object sender, EventArgs e)
+    {
+        await HideScrolls();
+
+        ScrollMonitoring.Opacity = 0;
+        ScrollMonitoring.TranslationY = 20;
+        ScrollMonitoring.IsVisible = true;
+
+        await Task.WhenAll(
+            ScrollMonitoring.FadeTo(1, 300, Easing.CubicIn),
+            ScrollMonitoring.TranslateTo(0, 0, 300, Easing.CubicOut)
+        );
+    }
+
     #endregion
 
+    #region Conexão
     private void OnConnectClicked(object sender, EventArgs e)
     {
         string ip = ipEntry.Text;
@@ -340,6 +430,11 @@ public partial class AndroidPage : ContentPage
                 oxygenGauge.UpdateValue(oxygen);
                 thermometerGauge.UpdateValue(temperature);
                 gsrWave.UpdateValue(gsr);
+
+                _BPM = bpm;
+                _Oxy = (float)oxygen;
+                _GSR = (float)gsr;
+                _Temp = (float)temperature;
             }
             catch (Exception ex)
             {
@@ -366,9 +461,22 @@ public partial class AndroidPage : ContentPage
             StopAnimations();
         }
     }
+    #endregion
 
     private void btnActualizar_Clicked(object sender, EventArgs e)
     {
         RandomUpdate();
+    }
+
+    private async void OnLogoutClicked(object sender, EventArgs e)
+    {
+        // Redirecionar para a tela de login
+        await Navigation.PopModalAsync();
+    }
+
+    private async void OnViewHistoryClicked(object sender, EventArgs e)
+    {        
+        // Redirecionar para a tela de histórico
+        await Navigation.PushModalAsync(new HistoryPage(User));
     }
 }

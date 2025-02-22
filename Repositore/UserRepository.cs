@@ -9,6 +9,24 @@ public class UserRepository : ConectionDatabase
     {
     }
 
+    // Retorna o Id do usuário pelo nome e senha
+    public async Task<User?> GetUserByNameAndPasswordAsync(string name, string password)
+    {
+        var user = await database.Table<User>()
+                                 .Where(u => u.Name == name && u.Password == password)
+                                 .FirstOrDefaultAsync();
+        return user; // Retorna o Id do usuário ou null se não existir
+    }
+
+    // Verifica se o nome e a senha existem no banco de dados
+    public async Task<bool> CheckUserCredentialsAsync(string name, string password)
+    {
+        var user = await database.Table<User>()
+                                 .Where(u => u.Name == name && u.Password == password)
+                                 .FirstOrDefaultAsync();
+        return user != null; // Retorna true se o usuário existir
+    }
+
     // Create
     public Task<int> SaveUserAsync(User user)
     {

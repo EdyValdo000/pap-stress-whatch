@@ -15,11 +15,7 @@ namespace pap.Database
             database = new SQLiteAsyncConnection(local);
             
             database.CreateTableAsync<User>().Wait();
-            database.CreateTableAsync<AIRecommendation>().Wait();
-            database.CreateTableAsync<GSRData>().Wait();
-            database.CreateTableAsync<HeartOximeterData>().Wait();
-            database.CreateTableAsync<MonitoringSession>().Wait();
-            database.CreateTableAsync<TemperatureData>().Wait();
+            database.CreateTableAsync<SensorData>().Wait();
         }       
     }
 }

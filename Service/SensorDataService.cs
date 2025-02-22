@@ -1,50 +1,50 @@
-﻿using pap.Database;
-using pap.Model;
+﻿using pap.Model;
 using pap.Repositore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace pap.Service;
+
 public class SensorDataService
 {
-    private readonly HeartOximeterDataRepository _heartOximeterRepositore;
-    private readonly TemperatureDataRepository _temperatureRepositore;
-    private readonly GSRDataRepository _gsrRepositore;
+    private readonly SensorDataRepository repository;
 
-    public SensorDataService(
-        HeartOximeterDataRepository heartOximeterRepositore,
-        TemperatureDataRepository temperatureRepositore,
-        GSRDataRepository gsrRepositore)
+    public SensorDataService(SensorDataRepository repository)
     {
-        _heartOximeterRepositore = heartOximeterRepositore;
-        _temperatureRepositore = temperatureRepositore;
-        _gsrRepositore = gsrRepositore;
+        this.repository = repository;
     }
+    
+    // Retorna todos os SensorData com o mesmo UserId
+    public Task<List<SensorData>> GetSensorDataByUserId(int userId)
+        => repository.GetSensorDataByUserIdAsync(userId);
 
-    // Salvar todas as leituras dos sensores em uma única operação
-    public async Task SaveAll(HeartOximeterData heartData, TemperatureData tempData, GSRData gsrData)
-    {
-        await _heartOximeterRepositore.SaveHeartOximeterDataAsync(heartData);
-        await _temperatureRepositore.SaveTemperatureDataAsync(tempData);
-        await _gsrRepositore.SaveGSRDataAsync(gsrData);
-    }
+    // Salvar dados dos sensores
+    public Task<int> Save(SensorData sensorData) => repository.SaveSensorDataAsync(sensorData);
 
-    // Buscar a última leitura dos três sensores para uma sessão específica
-    public async Task<(HeartOximeterData, TemperatureData, GSRData)> GetLastReadings(int sessionId)
-    {
-        var heart = await _heartOximeterRepositore.GetLastReadingBySessionAsync(sessionId);
-        var temp = await _temperatureRepositore.GetLastReadingBySessionAsync(sessionId);
-        var gsr = await _gsrRepositore.GetLastReadingBySessionAsync(sessionId);
-        return (heart, temp, gsr);
-    }
+    // Obter todos os dados dos sensores
+    public Task<List<SensorData>> GetAll() => repository.GetAllSensorDataAsync();
 
-    // Deletar todas as leituras dos sensores para uma sessão específica
-    public async Task DeleteAllBySession(int sessionId)
-    {
-        var heartData = await _heartOximeterRepositore.GetDataBySessionIdAsync(sessionId);
-        var tempData = await _temperatureRepositore.GetDataBySessionIdAsync(sessionId);
-        var gsrData = await _gsrRepositore.GetDataBySessionIdAsync(sessionId);
+    // Obter dados dos sensores por ID
+    public Task<SensorData> GetById(int id) => repository.GetSensorDataByIdAsync(id);
 
-        foreach (var data in heartData) await _heartOximeterRepositore.DeleteHeartOximeterDataAsync(data);
-        foreach (var data in tempData) await _temperatureRepositore.DeleteTemperatureDataAsync(data);
-        foreach (var data in gsrData) await _gsrRepositore.DeleteGSRDataAsync(data);
-    }
+    // Atualizar dados dos sensores
+    public Task<int> Update(SensorData sensorData) => repository.UpdateSensorDataAsync(sensorData);
+
+    // Excluir dados dos sensores
+    public Task<int> Delete(SensorData sensorData) => repository.DeleteSensorDataAsync(sensorData);
+
+    // Extra 1 - Obter dados dos sensores por UserId
+    public Task<List<SensorData>> GetByUserId(int userId) => repository.GetSensorDataByUserIdAsync(userId);
+
+    // Extra 2 - Obter dados dos sensores com nível de estresse acima de um valor
+    public Task<List<SensorData>> GetByStressLevel(int minStressLevel) => repository.GetSensorDataByStressLevelAsync(minStressLevel);
+
+    // Extra 3 - Obter os últimos dados dos sensores (limit 10)
+    public Task<List<SensorData>> GetLastSensorData(int limit = 10) => repository.GetLastSensorDataAsync(limit);
+
+    // Extra 4 - Contar o número de registros de dados dos sensores
+    public Task<int> GetCount() => repository.GetSensorDataCountAsync();
+
+    // Extra 5 - Obter dados dos sensores em um intervalo de tempo
+    public Task<List<SensorData>> GetByTimeRange(DateTime startTime, DateTime endTime) => repository.GetSensorDataByTimeRangeAsync(startTime, endTime);
 }
