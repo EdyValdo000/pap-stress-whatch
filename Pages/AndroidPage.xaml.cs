@@ -11,7 +11,7 @@ public partial class AndroidPage : ContentPage
     private ThermometerGauge thermometerGauge = new ThermometerGauge();
     private GsrWave gsrWave = new GsrWave();
 
-    private float _BPM, _Oxy, _GSR, _Temp;
+    public float _BPM, _Oxy, _GSR, _Temp;
 
     private readonly WifiConection Esp8266 = new();
 
@@ -123,6 +123,16 @@ public partial class AndroidPage : ContentPage
         double NewTemp = TemperatureUpdate();
         double NewOxy = OxygenUpdate();
         double NewBPM = HeartRateUpdate();
+
+        _BPM = (float)NewBPM;
+        _GSR = (float)NewGSR;
+        _Oxy = (float)NewOxy;
+        _Temp = (float)NewTemp;
+
+        lbBPM.Text = NewBPM.ToString();
+        lbGSR.Text = NewGSR.ToString();
+        lbSpO2.Text = NewOxy.ToString() + "%";
+        lbTemp.Text = NewTemp.ToString() + " ºC";
 
         //Load sample data
         var sampleData = new MLStress.ModelInput()

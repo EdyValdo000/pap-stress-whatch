@@ -53,6 +53,7 @@
                                     HeightRequest="24" 
                                     VerticalOptions="Center"/>
                                 <Label Text="72" 
+                                    x:Name="lbBPM"
                                     Grid.Row="0" Grid.Column="1" 
                                     FontSize="24" 
                                     FontAttributes="Bold" 
@@ -78,6 +79,7 @@
                                     HeightRequest="24" 
                                     VerticalOptions="Center"/>
                                 <Label Text="0.5" 
+                                    x:Name="lbGSR"
                                     Grid.Row="0" Grid.Column="1" 
                                     FontSize="24" 
                                     FontAttributes="Bold" 
@@ -103,6 +105,7 @@
                                     HeightRequest="24" 
                                     VerticalOptions="Center"/>
                                 <Label Text="98%" 
+                                    x:Name="lbSpO2"
                                     Grid.Row="0" Grid.Column="1" 
                                     FontSize="24" 
                                     FontAttributes="Bold" 
@@ -128,6 +131,7 @@
                                     HeightRequest="24" 
                                     VerticalOptions="Center"/>
                                 <Label Text="35 ºC" 
+                                    x:Name="lbTemp"
                                     Grid.Row="0" Grid.Column="1" 
                                     FontSize="24" 
                                     FontAttributes="Bold" 
@@ -178,7 +182,7 @@
                     <Grid Grid.Row="4" ColumnDefinitions="*,*,*" ColumnSpacing="40" RowSpacing="10" RowDefinitions="*,*,*" HorizontalOptions="CenterAndExpand">
                         <Button Text="Actualizar"
                              Grid.Column="0"
-                             IsVisible="Collapse"
+                             IsVisible="Visible"
                              BackgroundColor="#333333" 
                              Clicked="btnActualizar_Clicked"
                              TextColor="White" 

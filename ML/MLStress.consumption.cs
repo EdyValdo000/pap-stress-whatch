@@ -34,6 +34,7 @@ namespace StressWatchML
             [LoadColumn(4)]
             [ColumnName(@"Nível de Estresse")]
             public float Nível_de_Estresse { get; set; }
+
         }
 
         #endregion
@@ -71,7 +72,7 @@ namespace StressWatchML
 
         public static readonly Lazy<PredictionEngine<ModelInput, ModelOutput>> PredictEngine = new Lazy<PredictionEngine<ModelInput, ModelOutput>>(() => CreatePredictEngine().Result, true);
 
-        private static async Task<PredictionEngine<ModelInput, ModelOutput>> CreatePredictEngine()
+        private async static Task<PredictionEngine<ModelInput, ModelOutput>> CreatePredictEngine()
         {
             var mlContext = new MLContext();
             using var stream = await FileSystem.OpenAppPackageFileAsync("MLStress.mlnet");
