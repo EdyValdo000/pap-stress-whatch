@@ -129,8 +129,8 @@ public partial class AndroidPage : ContentPage
         _Oxy = (float)NewOxy;
         _Temp = (float)NewTemp;
 
-        lbBPM.Text = NewBPM.ToString();
-        lbGSR.Text = NewGSR.ToString();
+        lbBPM.Text = NewBPM.ToString() + " BPM";
+        lbGSR.Text = NewGSR.ToString() + "µS";
         lbSpO2.Text = NewOxy.ToString() + "%";
         lbTemp.Text = NewTemp.ToString() + " ºC";
 
@@ -445,6 +445,11 @@ public partial class AndroidPage : ContentPage
                 _Oxy = (float)oxygen;
                 _GSR = (float)gsr;
                 _Temp = (float)temperature;
+
+                lbBPM.Text = _BPM.ToString() + " BPM";
+                lbGSR.Text = _GSR.ToString() + "µS";
+                lbSpO2.Text = _Oxy.ToString() + "%";
+                lbTemp.Text = _Temp.ToString() + " ºC";
             }
             catch (Exception ex)
             {

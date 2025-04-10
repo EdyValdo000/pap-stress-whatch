@@ -60,9 +60,9 @@
                                     TextColor="White" 
                                     Margin="10,0,0,0" 
                                     VerticalOptions="Center"/>
-                                <Label Text="BPM" 
+                                <Label Text="Batimentos por minuto" 
                                     Grid.Row="1" Grid.Column="1" 
-                                    FontSize="14" 
+                                    FontSize="12" 
                                     TextColor="White" 
                                     Margin="10,0,0,0" 
                                     VerticalOptions="Center"/>
@@ -86,9 +86,9 @@
                                     TextColor="White" 
                                     Margin="10,0,0,0" 
                                     VerticalOptions="Center"/>
-                                <Label Text="µS" 
+                                <Label Text="COndutividade da pele" 
                                     Grid.Row="1" Grid.Column="1" 
-                                    FontSize="14" 
+                                    FontSize="12" 
                                     TextColor="White" 
                                     Margin="10,0,0,0" 
                                     VerticalOptions="Center"/>
@@ -112,9 +112,9 @@
                                     TextColor="White" 
                                     Margin="10,0,0,0" 
                                     VerticalOptions="Center"/>
-                                <Label Text="SpO2" 
+                                <Label Text="Oxygenação do sangue" 
                                     Grid.Row="1" Grid.Column="1" 
-                                    FontSize="14" 
+                                    FontSize="12" 
                                     TextColor="White" 
                                     Margin="10,0,0,0" 
                                     VerticalOptions="Center"/>
@@ -135,6 +135,12 @@
                                     Grid.Row="0" Grid.Column="1" 
                                     FontSize="24" 
                                     FontAttributes="Bold" 
+                                    TextColor="White" 
+                                    Margin="10,0,0,0" 
+                                    VerticalOptions="Center"/>
+                                <Label Text="Temperatura do corpo" 
+                                    Grid.Row="1" Grid.Column="1" 
+                                    FontSize="12" 
                                     TextColor="White" 
                                     Margin="10,0,0,0" 
                                     VerticalOptions="Center"/>
@@ -182,7 +188,7 @@
                     <Grid Grid.Row="4" ColumnDefinitions="*,*,*" ColumnSpacing="40" RowSpacing="10" RowDefinitions="*,*,*" HorizontalOptions="CenterAndExpand">
                         <Button Text="Actualizar"
                              Grid.Column="0"
-                             IsVisible="Visible"
+                             IsVisible="Collapse"
                              BackgroundColor="#333333" 
                              Clicked="btnActualizar_Clicked"
                              TextColor="White" 
