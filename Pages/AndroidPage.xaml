@@ -86,7 +86,7 @@
                                     TextColor="White" 
                                     Margin="10,0,0,0" 
                                     VerticalOptions="Center"/>
-                                <Label Text="COndutividade da pele" 
+                                <Label Text="Condutividade da pele" 
                                     Grid.Row="1" Grid.Column="1" 
                                     FontSize="12" 
                                     TextColor="White" 
@@ -112,7 +112,7 @@
                                     TextColor="White" 
                                     Margin="10,0,0,0" 
                                     VerticalOptions="Center"/>
-                                <Label Text="Oxygenação do sangue" 
+                                <Label Text="Oxigenação do sangue" 
                                     Grid.Row="1" Grid.Column="1" 
                                     FontSize="12" 
                                     TextColor="White" 
@@ -188,7 +188,7 @@
                     <Grid Grid.Row="4" ColumnDefinitions="*,*,*" ColumnSpacing="40" RowSpacing="10" RowDefinitions="*,*,*" HorizontalOptions="CenterAndExpand">
                         <Button Text="Actualizar"
                              Grid.Column="0"
-                             IsVisible="Collapse"
+                             IsVisible="Visible"
                              BackgroundColor="#333333" 
                              Clicked="btnActualizar_Clicked"
                              TextColor="White" 

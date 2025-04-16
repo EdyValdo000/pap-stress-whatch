@@ -17,7 +17,7 @@ namespace pap.Graphics
             float height = dirtyRect.Height * 0.7f; // Altura do tubo
 
             // Normaliza o valor da temperatura entre 35°C e 42°C
-            float minTemp = 35.0f, maxTemp = 42.0f;
+            float minTemp = 29.0f, maxTemp = 40.0f;
             float normalizedValue = Math.Clamp((float)((Value - minTemp) / (maxTemp - minTemp)), 0, 1);
             float mercuryHeight = height * normalizedValue; // Altura do líquido
             float mercuryTop = centerY + height / 2 - mercuryHeight; // Posição do topo do líquido
@@ -106,7 +106,7 @@ namespace pap.Graphics
 
         public void UpdateValue(double newValue)
         {
-            Value = Math.Clamp(newValue, 35.0, 42.0);
+            Value = Math.Clamp(newValue, 29.0, 40.0);
 
             if (!_isAnimating)
             {

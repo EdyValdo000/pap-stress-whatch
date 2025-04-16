@@ -4,11 +4,7 @@ using pap.Database;
 
 namespace pap.Repositore;
 public class UserRepository : ConectionDatabase
-{   
-    public UserRepository()
-    {
-    }
-
+{      
     // Retorna o Id do usuário pelo nome e senha
     public async Task<User?> GetUserByNameAndPasswordAsync(string name, string password)
     {
