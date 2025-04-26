@@ -2,8 +2,8 @@ using pap.Conection;
 using pap.Graphics;
 using pap.Model;
 using StressWatchML;
-
 namespace pap.Pages;
+
 public partial class AndroidPage : ContentPage
 {
     private HeartRateGraph heartRateGraph = new HeartRateGraph();
