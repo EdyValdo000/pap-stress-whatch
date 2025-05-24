@@ -1,8 +1,8 @@
 ﻿using SQLite;
-using pap.Model;
-using pap.Database;
+using NewPap.Model;
+using NewPap.Database;
 
-namespace pap.Repositore;
+namespace NewPap.Repositore;
 public class UserRepository : ConectionDatabase
 {      
     // Retorna o Id do usuário pelo nome e senha

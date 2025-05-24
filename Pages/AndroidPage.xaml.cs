@@ -1,8 +1,8 @@
-using pap.Conection;
-using pap.Graphics;
-using pap.Model;
+using NewPap.Conection;
+using NewPap.Graphics;
+using NewPap.Model;
 using StressWatchML;
-namespace pap.Pages;
+namespace NewPap.Pages;
 
 public partial class AndroidPage : ContentPage
 {

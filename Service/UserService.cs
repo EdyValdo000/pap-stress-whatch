@@ -1,7 +1,7 @@
-﻿using pap.Model;
-using pap.Repositore;
+﻿using NewPap.Model;
+using NewPap.Repositore;
 
-namespace pap.Service;
+namespace NewPap.Service;
 public class UserService
 {
     private readonly UserRepository repositore;

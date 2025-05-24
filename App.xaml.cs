@@ -1,8 +1,8 @@
-﻿using pap.Pages;
-using pap.Repositore;
-using pap.Service;
+﻿using NewPap.Pages;
+using NewPap.Repositore;
+using NewPap.Service;
 
-namespace pap;
+namespace NewPap;
 public partial class App : Application
 {
     public static UserService? UserService { get; set; }

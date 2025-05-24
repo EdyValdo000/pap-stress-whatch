@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace pap.Graphics
+namespace NewPap.Graphics
 {
     public class OxygenGauge : IDrawable
     {

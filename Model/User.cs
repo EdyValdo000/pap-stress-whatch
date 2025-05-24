@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace pap.Model;
+namespace NewPap.Model;
 public class User
 {
     [PrimaryKey, AutoIncrement] public int Id { get; set; }

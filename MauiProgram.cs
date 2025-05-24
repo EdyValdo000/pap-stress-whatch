@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace pap
+namespace NewPap
 {
     public static class MauiProgram
     {

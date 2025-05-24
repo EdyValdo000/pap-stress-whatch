@@ -1,5 +1,5 @@
-﻿using pap.Model;
-namespace pap;
+﻿using NewPap.Model;
+namespace NewPap;
 
 public partial class MainPage : ContentPage
 {

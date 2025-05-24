@@ -1,4 +1,4 @@
-namespace pap.Pages;
+namespace NewPap.Pages;
 
 public partial class WinUIAiWindow : Window
 {

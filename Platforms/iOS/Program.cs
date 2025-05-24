@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace pap
+namespace NewPap
 {
     public class Program
     {

@@ -1,5 +1,5 @@
 ﻿using SQLite;
-namespace pap.Model;
+namespace NewPap.Model;
 
 public class SensorData
 {

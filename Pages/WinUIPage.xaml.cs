@@ -1,9 +1,9 @@
 using Microsoft.Maui;
-using pap.Conection;
-using pap.Graphics;
+using NewPap.Conection;
+using NewPap.Graphics;
 using System.Security.Cryptography;
 
-namespace pap.Pages;
+namespace NewPap.Pages;
 
 public partial class WinUIPage : ContentPage
 {
@@ -11,6 +11,7 @@ public partial class WinUIPage : ContentPage
     private OxygenGauge oxygenGauge = new OxygenGauge();
     private ThermometerGauge thermometerGauge = new ThermometerGauge();
     private GsrWave gsrWave = new GsrWave();
+    private BpmGraphDrawable bpmGraphDrawable = new BpmGraphDrawable();
 
     private readonly WifiConection Esp8266 = new();
 
@@ -22,6 +23,9 @@ public partial class WinUIPage : ContentPage
         oxygenGraphicsView.Drawable = oxygenGauge;
         temperatureGraphicsView.Drawable = thermometerGauge;
         gsrGraphicsView.Drawable = gsrWave;
+        bpmGraphDrawableView.Drawable = bpmGraphDrawable;
+
+        StartAnimations();
     }
 
     #region Animations graphics
@@ -56,12 +60,22 @@ public partial class WinUIPage : ContentPage
             return animationsRunning; // Continua executando se estiver ativo
         });
     }
+    
+    private void StartbpmGraphAnimation()
+    {
+        Device.StartTimer(TimeSpan.FromMilliseconds(50), () =>
+        {
+            bpmGraphDrawableView.Invalidate();
+            return animationsRunning; // Continua executando se estiver ativo
+        });
+    }
 
     private bool animationsRunning = false;
 
     private void StartAnimations()
     {
         animationsRunning = true;
+        StartbpmGraphAnimation();
         StartGSRAnimation();
         StartECGAnimation();
         StartOxygenGaugeAnimation();
@@ -107,6 +121,14 @@ public partial class WinUIPage : ContentPage
         gsrWave.UpdateValue(newValue);
         gsrGraphicsView.Invalidate(); // Atualiza o gráfico
     }
+
+    private void updateBPM()
+    {
+        Random rnd = new Random();
+        int newBPM = rnd.Next(60, 120); // Gera um BPM aleatório entre 60 e 120
+        bpmGraphDrawable.UpdateBpmValue(newBPM); // Atualiza apenas o BPM
+        bpmGraphDrawableView.Invalidate(); // Redesenha sem reiniciar a onda
+    }
     #endregion
 
 
@@ -121,8 +143,10 @@ public partial class WinUIPage : ContentPage
         TemperatureUpdate();
         OxygenUpdate();
         HeartRateUpdate();
+        updateBPM();
     }
 
+    #region Conexão
     private void OnConnectClicked(object sender, EventArgs e)
     {
         string ip = ipEntry.Text;
@@ -225,6 +249,21 @@ public partial class WinUIPage : ContentPage
         }
     }
 
+    private void OffConnectClicked(object sender, EventArgs e)
+    {
+        if (Esp8266.IsConected())
+        {
+            Esp8266.Desconected();
+            btnDesconectar.IsVisible = false;
+            btnConectar.IsVisible = true;
+            statusLabel.Text = "Desconectado!";
+            ipEntry.IsEnabled = true;
+            portEntry.IsEnabled = true;
+            StopAnimations();
+        }
+    }
+    #endregion
+
     #region Navigations Buttons
     private async void Settings_Clicked(object sender, EventArgs e)
     {
@@ -302,19 +341,5 @@ public partial class WinUIPage : ContentPage
     private void Menu_Clicked(object sender, EventArgs e)
     {
 
-    }
-
-    private void OffConnectClicked(object sender, EventArgs e)
-    {
-        if (Esp8266.IsConected())
-        {
-            Esp8266.Desconected();
-            btnDesconectar.IsVisible = false;
-            btnConectar.IsVisible = true;
-            statusLabel.Text = "Desconectado!";
-            ipEntry.IsEnabled = true;
-            portEntry.IsEnabled = true;
-            StopAnimations();
-        }
-    }
+    }   
 }

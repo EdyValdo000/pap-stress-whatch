@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Microsoft.Maui.Controls;
-using pap.Model;
-using pap.Service;
+using NewPap.Model;
+using NewPap.Service;
 
-namespace pap.Pages
+namespace NewPap.Pages
 {
     public partial class HistoryPage : ContentPage
     {

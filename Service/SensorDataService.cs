@@ -1,9 +1,9 @@
-﻿using pap.Model;
-using pap.Repositore;
+﻿using NewPap.Model;
+using NewPap.Repositore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace pap.Service;
+namespace NewPap.Service;
 
 public class SensorDataService
 {

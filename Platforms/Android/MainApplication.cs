@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace pap
+namespace NewPap
 {
     [Application]
     public class MainApplication : MauiApplication

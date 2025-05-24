@@ -1,10 +1,10 @@
 ﻿using SQLite;
-using pap.Model;
-using pap.Database;
+using NewPap.Model;
+using NewPap.Database;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace pap.Repositore
+namespace NewPap.Repositore
 {
     public class SensorDataRepository : ConectionDatabase
     {

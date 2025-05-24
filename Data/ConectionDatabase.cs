@@ -1,7 +1,7 @@
-﻿using pap.Model;
+﻿using NewPap.Model;
 using SQLite;
 
-namespace pap.Database;
+namespace NewPap.Database;
 
 public class ConectionDatabase
 {

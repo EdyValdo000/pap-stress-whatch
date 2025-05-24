@@ -1,4 +1,4 @@
-﻿namespace pap
+﻿namespace NewPap
 {
     public partial class AppShell : Shell
     {

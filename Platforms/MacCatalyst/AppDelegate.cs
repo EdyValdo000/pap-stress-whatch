@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace pap
+namespace NewPap
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

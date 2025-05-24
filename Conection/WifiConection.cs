@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text;
 
-namespace pap.Conection;
+namespace NewPap.Conection;
 
 public class WifiConection
 {

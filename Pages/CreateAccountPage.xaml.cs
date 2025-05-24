@@ -1,7 +1,7 @@
 using Microsoft.Maui.Controls;
-using pap.Model;
+using NewPap.Model;
 
-namespace pap.Pages
+namespace NewPap.Pages
 {
     public partial class CreateAccountPage : ContentPage
     {
